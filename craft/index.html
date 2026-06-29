@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Siobhan Frost — Folio for Craft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --ink:#121110; --soft:#86857f; --faint:#b8b7b2; --line:#eaeae6;
+  --black:#0b0b0a; --cream:#f4f2ec; --accent:#2f5a44; --hover:#3a2fe6;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Newsreader",Georgia,serif;
+  --pad:clamp(1.25rem,5vw,6rem);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;letter-spacing:-0.005em}
+img,video{display:block;width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+.label{font-size:.72rem;letter-spacing:.14em;text-transform:lowercase;color:var(--soft);font-weight:500}
+
+.flag{background:#1a1915;color:#c9c2b4;font-size:.62rem;letter-spacing:.04em;text-align:center;padding:.5rem 1rem;text-transform:lowercase}
+
+/* nav */
+.bar{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;justify-content:space-between;align-items:center;padding:1.4rem var(--pad);mix-blend-mode:difference;color:#fff;pointer-events:none}
+.bar a,.bar .wm{font-size:.78rem;letter-spacing:.02em;text-transform:lowercase;font-weight:500;pointer-events:auto}
+.bar nav{display:flex;gap:1.6rem}
+
+/* ===== capabilities checklist ===== */
+.role-hud{position:fixed;z-index:55;left:clamp(1rem,2.5vw,2.4rem);top:5.4rem;width:212px;
+  opacity:0;transition:opacity .6s ease,transform .42s ease;
+  background:rgba(255,255,255,.74);backdrop-filter:blur(11px);-webkit-backdrop-filter:blur(11px);
+  border:1px solid var(--line);border-radius:13px;padding:1.05rem 1.15rem;box-shadow:0 18px 46px -28px rgba(0,0,0,.32)}
+.role-hud.show{opacity:1}
+.role-hud .ex{position:absolute;top:.95rem;right:1.05rem;font-size:1rem;line-height:1;color:var(--soft);transition:transform .4s ease}
+.role-hud:hover .ex,.role-hud.open .ex{transform:rotate(45deg)}
+.role-hud.on-dark .ex{color:#9a9488}
+.role-hud .hl{font-size:.66rem;letter-spacing:.16em;text-transform:lowercase;color:var(--soft);margin-bottom:.1rem;font-weight:500}
+.role-hud .hs{font-size:.62rem;letter-spacing:.06em;text-transform:lowercase;color:var(--faint);margin-bottom:.65rem}
+.role-hud ul{list-style:none;max-height:0;opacity:0;overflow:hidden;margin:0;transition:max-height .42s ease,opacity .3s ease,margin .42s ease}
+.role-hud:hover ul,.role-hud.open ul{max-height:360px;opacity:1;margin:.4rem 0 .2rem}
+.role-hud li{display:flex;gap:.65rem;align-items:center;padding:.5rem 0;font-size:.8rem;line-height:1.25;color:var(--faint);transition:color .5s ease}
+.role-hud li .tick{flex:0 0 auto;width:15px;height:15px}
+.role-hud li .tick circle{stroke:#cdc7ba;stroke-width:1.5;fill:none}
+.role-hud li .tick path{stroke:var(--accent);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:20;stroke-dashoffset:20;transition:stroke-dashoffset .55s cubic-bezier(.65,0,.35,1)}
+.role-hud li.done{color:var(--ink)}
+.role-hud li.done .tick circle{stroke:var(--accent)}
+.role-hud li.done .tick path{stroke-dashoffset:0}
+.role-hud .prog{margin-top:.8rem;height:1px;background:var(--line);position:relative}
+.role-hud .prog i{position:absolute;left:0;top:0;height:1px;width:0;background:var(--accent);transition:width .6s ease}
+.role-hud .pct{margin-top:.55rem;font-size:.62rem;letter-spacing:.06em;color:var(--soft);text-transform:lowercase}
+.role-hud.on-dark .hl{color:#cfc8ba}.role-hud.on-dark .hs{color:#8a8377}
+.role-hud.on-dark li{color:#8a8377}.role-hud.on-dark li.done{color:#f3efe5}
+.role-hud.on-dark li .tick circle{stroke:#5a554b}
+.role-hud.on-dark li.done .tick circle{stroke:#9fd0b4}.role-hud.on-dark li.done .tick path{stroke:#9fd0b4}
+.role-hud.on-dark .prog{background:#3a352e}.role-hud.on-dark .prog i{background:#9fd0b4}
+.role-hud.on-dark .pct{color:#9a9488}
+.role-hud.on-dark{background:rgba(16,15,12,.5);border-color:rgba(255,255,255,.1)}
+.hud-chip{display:none}
+@media(max-width:1100px){
+  .role-hud{display:block;left:1rem;right:1rem;top:auto;bottom:4.9rem;width:auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.15rem 1.3rem;box-shadow:0 24px 60px -22px rgba(0,0,0,.4);transform:translateY(160%);opacity:1;pointer-events:none}
+  .role-hud.open{transform:translateY(0);pointer-events:auto}
+  .role-hud.on-dark{background:#fff;border-color:var(--line)}
+  .hud-chip{display:inline-flex;position:fixed;right:1rem;bottom:1rem;z-index:57;align-items:center;gap:.4rem;background:var(--ink);color:#fff;border:0;border-radius:100px;padding:.74rem 1.1rem;font-family:inherit;font-size:.8rem;letter-spacing:.01em;cursor:pointer;text-transform:lowercase;box-shadow:0 14px 34px -16px rgba(0,0,0,.55)}
+  .hud-chip b{font-weight:600}
+}
+
+/* ===== hero ===== */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:7rem var(--pad) 4rem}
+.hero .forbrand{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:2.4rem}
+.hero .forbrand .label{margin-bottom:0}
+.hero .forbrand .bklogo{height:24px;width:auto;display:block}
+.hero h1{font-weight:600;font-size:clamp(3.4rem,13vw,11rem);line-height:.86;letter-spacing:-.04em;margin-bottom:1.6rem}
+.hero .role{font-size:clamp(.85rem,1.4vw,1.05rem);letter-spacing:.04em;text-transform:lowercase;color:var(--soft);font-weight:500;margin-bottom:2rem}
+.hero .note{font-family:var(--serif);font-weight:300;font-size:clamp(1.35rem,2.3vw,2.2rem);line-height:1.34;max-width:none;color:#23211b}
+.hero .note b{font-weight:400;font-style:italic}
+.hero .scroll{margin-top:3.5rem;font-size:.7rem;letter-spacing:.14em;text-transform:lowercase;color:var(--faint)}
+/* condensed client ticker in hero */
+.hero-clients{align-self:flex-end;width:min(440px,74vw);margin:0 0 2.4rem auto;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+.hero-clients .hcl{font-size:.6rem;letter-spacing:.14em;text-transform:lowercase;color:var(--faint);text-align:right;margin-bottom:.7rem}
+.hctick{display:flex;width:max-content;animation:tick 40s linear infinite}
+.hctrack{display:flex;align-items:center;gap:2.1rem;padding-right:2.1rem}
+.hctrack img{height:15px;width:auto;display:block;flex:0 0 auto;filter:brightness(0);opacity:.66}
+.hctrack img.box{height:24px}
+
+/* ===== index ===== */
+.index{padding:clamp(3rem,8vh,6rem) var(--pad);border-top:1px solid var(--line);border-bottom:1px solid var(--line);max-width:1560px;margin:0 auto}
+.index .label{margin-bottom:1.8rem}
+.index ol{list-style:none}
+.index li{border-top:1px solid var(--line)}.index li:last-child{border-bottom:1px solid var(--line)}
+.index a{display:flex;align-items:baseline;gap:1.6rem;padding:1.15rem 0;transition:padding-left .35s cubic-bezier(.2,.8,.2,1),color .3s}
+.index a:hover{padding-left:1.1rem;color:var(--hover)}
+.index a:hover .n{color:var(--hover)}
+.index .n{font-size:.78rem;color:var(--faint);min-width:2.6rem;font-weight:500;transition:color .3s}
+.index .nm{font-weight:500;font-size:clamp(1.5rem,3.6vw,2.6rem);letter-spacing:-.02em}
+.index .cat{margin-left:auto;font-size:.74rem;color:var(--soft);text-transform:lowercase;text-align:right}
+
+/* ===== case study ===== */
+.cs{display:grid;grid-template-columns:0.52fr 1.48fr;gap:clamp(1.5rem,3.5vw,4rem);max-width:1560px;margin:0 auto;padding:0 var(--pad)}
+.cs+.cs{border-top:1px solid var(--line)}
+.cs .panel{position:sticky;top:0;align-self:start;height:100vh;display:flex;flex-direction:column;justify-content:center;padding:6rem 0}
+.cs .panel .meta{display:flex;justify-content:space-between;font-size:.7rem;letter-spacing:.06em;text-transform:lowercase;color:var(--soft);margin-bottom:1.8rem;font-weight:500}
+.cs .panel h3{font-weight:600;font-size:clamp(1.6rem,2.9vw,2.7rem);line-height:1;letter-spacing:-.03em;margin-bottom:1.3rem}
+.cs .panel .blurb p{font-size:clamp(.9rem,.95vw,1.02rem);line-height:1.55;color:#403d35;margin-bottom:.9rem;max-width:36ch;font-weight:400}
+.cs .panel .brand{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);margin-top:1.6rem;font-weight:600}
+.cs .panel .role{font-size:.72rem;letter-spacing:.02em;text-transform:lowercase;color:var(--soft);margin-top:.45rem}
+.cs .panel .icon{margin:1.3rem 0 0 0;width:clamp(103px,10.6vw,147px);height:auto;border-radius:0;display:block;align-self:flex-start}
+.cs .stream{padding:6rem 0;display:flex;flex-direction:column;gap:clamp(1rem,1.8vw,1.6rem)}
+.cs .stream img,.cs .stream video{border-radius:0;background:#fff}
+.cs .stream .half{width:52%}
+.cs .stream .half.r{margin-left:auto}
+.cs .stream .stat{display:flex;flex-wrap:wrap;gap:2.4rem;padding:1.5rem 0}
+.cs .stream .stat .big{font-weight:600;font-size:clamp(2rem,4vw,3.1rem);letter-spacing:-.03em;line-height:1}
+.cs .stream .stat .lbl{font-size:.7rem;color:var(--soft);text-transform:lowercase;letter-spacing:.04em;margin-top:.35rem;max-width:18ch}
+
+/* quote band */
+.quote{padding:clamp(4rem,11vh,8.5rem) var(--pad);border-bottom:1px solid var(--line);text-align:left}
+.quote .q{font-family:var(--serif);font-weight:300;font-size:clamp(1.45rem,3.2vw,2.5rem);line-height:1.28;letter-spacing:-.01em;max-width:none;margin:0;color:#1c1a16}
+.quote .by{margin-top:1.7rem;font-size:.74rem;letter-spacing:.03em;text-transform:lowercase;color:var(--soft)}
+
+/* oly floating characters */
+.oly-ticker{overflow:hidden;padding:clamp(2.5rem,5vh,4rem) 0 clamp(4rem,8vh,6rem);border-bottom:1px solid var(--line)}
+.otick{display:flex;width:max-content;animation:tick 42s linear infinite}
+.oly-ticker:hover .otick{animation-play-state:paused}
+.otrack{display:flex;align-items:flex-end;gap:clamp(1.8rem,4vw,4rem);padding-right:clamp(1.8rem,4vw,4rem)}
+.ochar{position:relative;display:flex;align-items:flex-end;justify-content:center;height:clamp(140px,20vh,230px)}
+.ochar img{height:100%;width:auto;display:block;animation-name:float;animation-timing-function:ease-in-out;animation-iteration-count:infinite;will-change:transform}
+.ochar .oshadow{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:62%;height:15px;background:radial-gradient(ellipse at center,rgba(0,0,0,.26),rgba(0,0,0,0) 70%);border-radius:50%;filter:blur(2px);z-index:-1}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* client ticker (bottom) */
+.clients{padding:clamp(3rem,7vh,5.5rem) 0;border-top:1px solid var(--line);overflow:hidden}
+.clients .label{padding:0 var(--pad);margin-bottom:1.9rem}
+.ticker{display:flex;width:max-content;animation:tick 60s linear infinite}
+.clients:hover .ticker{animation-play-state:paused}
+.ctrack{display:flex;align-items:center;gap:clamp(2.6rem,5vw,5.5rem);padding-right:clamp(2.6rem,5vw,5.5rem)}
+.ctrack img{height:clamp(22px,2.6vw,34px);width:auto;display:block;flex:0 0 auto;filter:brightness(0);opacity:.78}
+.ctrack img.box{height:clamp(34px,4.4vw,54px)}
+
+/* divider */
+.divider{padding:clamp(6rem,18vh,13rem) var(--pad);text-align:center}
+.divider .big{font-weight:600;font-size:clamp(2.2rem,7vw,5.5rem);letter-spacing:-.03em;line-height:1.02}
+.divider .big em{font-family:var(--serif);font-style:italic;font-weight:300}
+
+/* closing */
+.end{background:var(--black);color:var(--cream);padding:clamp(6rem,18vh,13rem) var(--pad)}
+.end .label{color:#8a8377}
+.end h4{font-weight:600;font-size:clamp(2.8rem,9.5vw,7.5rem);line-height:.92;letter-spacing:-.04em;margin:1.5rem 0 1.4rem}
+.end .sub{font-family:var(--serif);font-weight:300;font-size:clamp(1.2rem,2.2vw,1.7rem);line-height:1.4;max-width:54ch;color:#cfc8ba;margin-bottom:2.6rem}
+.end a.mail{font-family:var(--serif);font-weight:300;font-size:clamp(1.4rem,2.7vw,2.2rem);border-bottom:1px solid #534b40;padding-bottom:.15rem;transition:color .3s,border-color .3s}
+.end a.mail:hover{color:var(--hover);border-color:var(--hover)}
+.end .contact{display:flex;gap:2rem;flex-wrap:wrap;align-items:baseline}
+.end .ai{margin-top:2.6rem;max-width:58ch;font-family:var(--serif);font-weight:300;font-size:clamp(1.1rem,1.8vw,1.4rem);line-height:1.45;color:#cfc8ba}
+.end .ai b{font-weight:400;font-style:italic}
+.end .fine{margin-top:3rem;font-size:.68rem;color:#7f786c;text-transform:lowercase;letter-spacing:.04em}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+@keyframes tick{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}.hctick{animation:none}}
+
+@media(max-width:860px){
+  .cs{grid-template-columns:1fr;gap:0}
+  .cs .panel{position:static;height:auto;min-height:0;padding:3.5rem 0 1.4rem}
+  .cs .stream{padding:0 0 3.5rem}
+  .hero .note{max-width:none}
+  .hero-clients{align-self:stretch;width:auto;margin:2.2rem 0 0}
+  .hero-clients .hcl{text-align:left}
+  .cs .stream .stat{gap:1.6rem 2.5rem}
+}
+@media(max-width:560px){
+  .hero{padding:6rem var(--pad) 3rem}
+  .hero h1{font-size:clamp(3rem,17vw,4.5rem)}
+  .cs .stream .stat{gap:1.4rem;padding:1.2rem 0}
+  .cs .stream .stat>div{flex:1 0 42%}
+  .cs .stream .half{width:64%}
+  .index .nm{font-size:1.45rem}
+  .flag{font-size:.56rem;letter-spacing:.02em}
+}
+</style>
+</head>
+<body>
+
+<div class="flag">private folio · prepared for craft</div>
+
+<header class="bar">
+  <a href="#" class="wm">siobhan frost</a>
+  <nav><a href="#work">work</a><a href="#contact">contact</a></nav>
+</header>
+
+<aside class="role-hud" id="hud" aria-label="capabilities matched to the role">
+  <span class="ex" aria-hidden="true">+</span>
+  <div class="hl">capabilities</div>
+  <div class="hs">shown across the work ✓</div>
+  <ul id="hud-list">
+    <li data-trigger="hoxton"><svg class="tick" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M4.5 8.2l2.3 2.4L11.6 5.4"/></svg>Creative direction, concept to launch</li>
+    <li data-trigger="moxie"><svg class="tick" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M4.5 8.2l2.3 2.4L11.6 5.4"/></svg>Leads multidisciplinary teams</li>
+    <li data-trigger="canvas"><svg class="tick" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M4.5 8.2l2.3 2.4L11.6 5.4"/></svg>Brand identity &amp; design systems</li>
+    <li data-trigger="oly"><svg class="tick" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M4.5 8.2l2.3 2.4L11.6 5.4"/></svg>Websites, apps &amp; ecommerce</li>
+    <li data-trigger="cleo"><svg class="tick" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M4.5 8.2l2.3 2.4L11.6 5.4"/></svg>Art direction &amp; photography</li>
+    <li data-trigger="cleo"><svg class="tick" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M4.5 8.2l2.3 2.4L11.6 5.4"/></svg>DTC + retail</li>
+    <li data-trigger="seven"><svg class="tick" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M4.5 8.2l2.3 2.4L11.6 5.4"/></svg>Drives growth &amp; investment</li>
+    <li data-trigger="endless"><svg class="tick" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M4.5 8.2l2.3 2.4L11.6 5.4"/></svg>AI-forward creative</li>
+  </ul>
+  <div class="prog"><i id="hud-bar"></i></div>
+  <div class="pct"><span id="hud-n">0</span> / 8 — shown in the work</div>
+</aside>
+<button class="hud-chip" id="hudChip" aria-label="capabilities — tap to view">capabilities · <b><span id="chip-n">0</span>/8</b> ✓</button>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="forbrand reveal"><span class="label">folio — prepared for</span><img class="bklogo" src="https://itscraft.com/wp-content/uploads/2025/11/favicon.svg" alt="Craft"></div>
+    <h1 class="reveal">Siobhan<br>Frost</h1>
+    <div class="role reveal">creative director · brand · freelance, contract or full-time</div>
+    <p class="note reveal">Creative director and founder, 18+ years across DTC, retail, home, lifestyle and health. I build brands from the ground up and lead the teams that bring them to life — directing identity, art direction, campaigns, web and AI-native production, <b>hands-on from first idea to launch.</b></p>
+    <div class="scroll reveal">scroll — selected work ↓</div>
+  </section>
+
+  <!-- INDEX -->
+  <section class="index" id="work">
+    <div class="label">selected work — 09</div>
+    <ol>
+      <li><a href="#hoxton"><span class="n">01</span><span class="nm">The Project at Hoxton</span><span class="cat">premium student apartments</span></a></li>
+      <li><a href="#moxie"><span class="n">02</span><span class="nm">Moxie Care &amp; Birth</span><span class="cat">fem health</span></a></li>
+      <li><a href="#canvas"><span class="n">03</span><span class="nm">Canvas</span><span class="cat">build-to-rent</span></a></li>
+      <li><a href="#oly"><span class="n">04</span><span class="nm">Oly Sheet</span><span class="cat">bedding</span></a></li>
+      <li><a href="#cleo"><span class="n">05</span><span class="nm">Cleo+Coco</span><span class="cat">dtc + retail</span></a></li>
+      <li><a href="#seven"><span class="n">06</span><span class="nm">Seven Starling</span><span class="cat">femtech</span></a></li>
+      <li><a href="#kooky"><span class="n">07</span><span class="nm">Kooky</span><span class="cat">design-led living</span></a></li>
+      <li><a href="#calico"><span class="n">08</span><span class="nm">Calico</span><span class="cat">student living</span></a></li>
+      <li><a href="#endless"><span class="n">09</span><span class="nm">I Am Endless</span><span class="cat">ai-native</span></a></li>
+    </ol>
+  </section>
+
+  <section class="cs" id="hoxton">
+    <div class="panel">
+      <div class="meta"><span>01 / 09</span><span>premium student apartments</span></div>
+      <h3>Shape the space<br>you inhabit</h3>
+      <div class="blurb">
+        <p>A 270-room residence in London's over-supplied student market — a brief to meet ambitious commercial targets in a category fighting for attention against established schemes.</p>
+        <p>We led with research, gathering academics in psychology, architecture and sociology and listening to students directly. The insight was clear: students who could shape their space were happier. From movable walls to self-curated events to a bespoke soundscape (a world first), every touchpoint laddered up to one line — “Shape the space you inhabit; define the person you become.”</p>
+      </div>
+      <div class="brand">The Project at Hoxton · BlackRock</div>
+      <div class="role">creative director · this works</div>
+      <video class="icon" src="../assets/craft/hoxton/icon.mp4" muted loop playsinline preload="metadata"></video>
+    </div>
+    <div class="stream">
+      <video class="reveal" src="../assets/craft/hoxton/01.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="stat reveal"><div><div class="big">270</div><div class="lbl">room residence</div></div><div><div class="big">World-first</div><div class="lbl">bespoke soundscape</div></div><div><div class="big">Award</div><div class="lbl">winning signage</div></div></div>
+      <img class="reveal" loading="lazy" src="../assets/craft/hoxton/02.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/hoxton/03.jpg" alt="">
+      <video class="reveal" src="../assets/craft/hoxton/04.mp4" muted loop playsinline preload="metadata"></video>
+      <img class="reveal" loading="lazy" src="../assets/craft/hoxton/05.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/hoxton/06.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/hoxton/07.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/hoxton/08.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/hoxton/09.jpg" alt="">
+    </div>
+  </section>
+  <section class="quote reveal">
+    <p class="q">“The Project has exceeded expectations in terms of emotional value, point of difference and cultural relevance. Siobhan and her team at This Works have created an environment students want to be in.”</p>
+    <p class="by">— James Halstead, Director of Real Assets, BlackRock</p>
+  </section>
+  <section class="cs" id="moxie">
+    <div class="panel">
+      <div class="meta"><span>02 / 09</span><span>fem health</span></div>
+      <h3>Baring all for<br>equity &amp; inclusion</h3>
+      <div class="blurb">
+        <p>Moxie Care &amp; Birth — an LA clinic and birth center led by midwives and OBGYNs — needed a brand that defied convention: inclusive, unafraid, radically human.</p>
+        <p>We built a bold identity celebrating the body in all its forms — raw, intimate imagery and a voice of warmth, honesty and strength. Stretch marks, scars and softness, all welcome.</p>
+        <p>I co-led creative direction with Jane Helpern, building the team early and directing brand design, art direction and rollout.</p>
+      </div>
+      <div class="brand">Moxie Care &amp; Birth</div>
+      <div class="role">co-creative director</div>
+      <img class="icon" src="../assets/craft/moxie/icon.webp" alt="Moxie">
+    </div>
+    <div class="stream">
+      <img class="reveal" loading="lazy" src="../assets/craft/moxie/01.jpg" alt="">
+      <video class="reveal half" src="../assets/craft/moxie/02.mp4" muted loop playsinline preload="metadata"></video>
+      <video class="reveal" src="../assets/craft/moxie/03.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="stat reveal"><div><div class="big">2 weeks</div><div class="lbl">birth center booked out</div></div><div><div class="big">Webby</div><div class="lbl">award nominee</div></div></div>
+      <img class="reveal" loading="lazy" src="../assets/craft/moxie/04.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/moxie/06.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/moxie/07.png" alt="">
+    </div>
+  </section>
+  <section class="cs" id="canvas">
+    <div class="panel">
+      <div class="meta"><span>03 / 09</span><span>build-to-rent</span></div>
+      <h3>The art<br>of life</h3>
+      <div class="blurb">
+        <p>GreenFort wanted to future-proof their Build-to-Rent brand in Australia — a parent brand, Canvas, to lead a growing category and stand apart as competitors emerged.</p>
+        <p>Rooted in the art of life, the identity embraces creativity and endless expression — a graphic system that literally makes space, a voice that opens conversation, and a world that extends into every building.</p>
+        <p>I led creative direction end to end, shaping the brand idea and directing identity, tone of voice and every design output across the portfolio.</p>
+      </div>
+      <div class="brand">Canvas · GreenFort Capital</div>
+      <div class="role">creative director</div>
+      <video class="icon" src="../assets/craft/canvas/icon.mp4" muted loop playsinline preload="metadata"></video>
+    </div>
+    <div class="stream">
+      <img class="reveal" loading="lazy" src="../assets/craft/canvas/01.jpg" alt="">
+      <video class="reveal" src="../assets/craft/canvas/02.mp4" muted loop playsinline preload="metadata"></video>
+      <img class="reveal" loading="lazy" src="../assets/craft/canvas/03.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/canvas/05.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/canvas/06.jpg" alt="">
+      <video class="reveal" src="../assets/craft/canvas/07.mp4" muted loop playsinline preload="metadata"></video>
+      <img class="reveal" loading="lazy" src="../assets/craft/canvas/08.jpg" alt="">
+      <video class="reveal half r" src="../assets/craft/canvas/09.mp4" muted loop playsinline preload="metadata"></video>
+    </div>
+  </section>
+  <section class="cs" id="oly">
+    <div class="panel">
+      <div class="meta"><span>04 / 09</span><span>bedding · product + service</span></div>
+      <h3>Changing<br>behaviours</h3>
+      <div class="blurb">
+        <p>Oly Sheet was both product and service: we washed, dried and delivered premium bedding across London — hotel-quality sheets without the laundry or the price tag.</p>
+        <p>I led creative direction start to finish — a strategist early, a designer and 3D animators throughout — across brand, art direction and web, leading the team end to end.</p>
+      </div>
+      <div class="brand">Oly Sheet</div>
+      <div class="role">co-founder &amp; creative director</div>
+      <video class="icon" src="../assets/craft/oly/icon.mp4" muted loop playsinline preload="metadata"></video>
+    </div>
+    <div class="stream">
+      <img class="reveal" loading="lazy" src="../assets/craft/oly/01.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/oly/02.jpg" alt="">
+      <video class="reveal" src="../assets/craft/oly/03.mp4" muted loop playsinline preload="metadata"></video>
+      <img class="reveal" loading="lazy" src="../assets/craft/oly/04.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/oly/05.jpg" alt="">
+    </div>
+  </section>
+
+  <!-- OLY TICKER -->
+  <section class="oly-ticker" aria-label="Oly Sheet characters"><div class="otick"><div class="otrack"><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/01.png" style="animation-duration:3.00s;animation-delay:0.0s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/02.png" style="animation-duration:3.28s;animation-delay:2.85s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/03.png" style="animation-duration:3.56s;animation-delay:2.7s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/04.png" style="animation-duration:3.84s;animation-delay:2.55s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/05.png" style="animation-duration:4.12s;animation-delay:2.4s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/06.png" style="animation-duration:3.00s;animation-delay:0.85s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/07.png" style="animation-duration:3.28s;animation-delay:0.7s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/09.png" style="animation-duration:3.56s;animation-delay:0.55s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/10.png" style="animation-duration:3.84s;animation-delay:0.4s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/12.png" style="animation-duration:4.12s;animation-delay:0.25s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/13.png" style="animation-duration:3.00s;animation-delay:1.7s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/14.png" style="animation-duration:3.28s;animation-delay:1.83s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/16.png" style="animation-duration:3.56s;animation-delay:1.96s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/18.png" style="animation-duration:3.84s;animation-delay:2.09s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/19.png" style="animation-duration:4.12s;animation-delay:2.22s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/20.png" style="animation-duration:3.00s;animation-delay:2.55s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/21.png" style="animation-duration:3.28s;animation-delay:2.96s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/22.png" style="animation-duration:3.56s;animation-delay:3.37s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/23.png" style="animation-duration:3.84s;animation-delay:3.78s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/24.png" style="animation-duration:4.12s;animation-delay:0.07s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/25.png" style="animation-duration:3.00s;animation-delay:0.4s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/26.png" style="animation-duration:3.28s;animation-delay:0.81s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/27.png" style="animation-duration:3.56s;animation-delay:1.22s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/28.png" style="animation-duration:3.84s;animation-delay:1.63s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/30.png" style="animation-duration:4.12s;animation-delay:2.04s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/31.png" style="animation-duration:3.00s;animation-delay:1.25s" alt=""></div></div><div class="otrack" aria-hidden="true"><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/01.png" style="animation-duration:3.00s;animation-delay:0.0s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/02.png" style="animation-duration:3.28s;animation-delay:2.85s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/03.png" style="animation-duration:3.56s;animation-delay:2.7s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/04.png" style="animation-duration:3.84s;animation-delay:2.55s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/05.png" style="animation-duration:4.12s;animation-delay:2.4s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/06.png" style="animation-duration:3.00s;animation-delay:0.85s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/07.png" style="animation-duration:3.28s;animation-delay:0.7s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/09.png" style="animation-duration:3.56s;animation-delay:0.55s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/10.png" style="animation-duration:3.84s;animation-delay:0.4s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/12.png" style="animation-duration:4.12s;animation-delay:0.25s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/13.png" style="animation-duration:3.00s;animation-delay:1.7s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/14.png" style="animation-duration:3.28s;animation-delay:1.83s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/16.png" style="animation-duration:3.56s;animation-delay:1.96s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/18.png" style="animation-duration:3.84s;animation-delay:2.09s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/19.png" style="animation-duration:4.12s;animation-delay:2.22s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/20.png" style="animation-duration:3.00s;animation-delay:2.55s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/21.png" style="animation-duration:3.28s;animation-delay:2.96s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/22.png" style="animation-duration:3.56s;animation-delay:3.37s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/23.png" style="animation-duration:3.84s;animation-delay:3.78s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/24.png" style="animation-duration:4.12s;animation-delay:0.07s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/25.png" style="animation-duration:3.00s;animation-delay:0.4s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/26.png" style="animation-duration:3.28s;animation-delay:0.81s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/27.png" style="animation-duration:3.56s;animation-delay:1.22s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/28.png" style="animation-duration:3.84s;animation-delay:1.63s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/30.png" style="animation-duration:4.12s;animation-delay:2.04s" alt=""></div><div class="ochar"><span class="oshadow"></span><img loading="lazy" src="../assets/craft/oly/chars/31.png" style="animation-duration:3.00s;animation-delay:1.25s" alt=""></div></div></div></section>
+  <section class="cs" id="cleo">
+    <div class="panel">
+      <div class="meta"><span>05 / 09</span><span>personal care · dtc + retail</span></div>
+      <h3>Naturally<br>victorious</h3>
+      <div class="blurb">
+        <p>In a market where everyone looks and sounds alike, we went back to their roots — channelling Cleopatra with bold hieroglyph-inspired logos, lyrical copy and storytelling steeped in scent and symbolism.</p>
+        <p>I led the end-to-end rebrand — strategy, identity, packaging, photography direction and e-commerce — and the national launch into Whole Foods Market.</p>
+      </div>
+      <div class="brand">Cleo + Coco</div>
+      <div class="role">creative director · full-time to fractional</div>
+      <video class="icon" src="../assets/craft/cleo/icon.mp4" muted loop playsinline preload="metadata"></video>
+    </div>
+    <div class="stream">
+      <img class="reveal" loading="lazy" src="../assets/craft/cleo/01.png" alt="">
+      <video class="reveal" src="../assets/craft/cleo/02.mp4" muted loop playsinline preload="metadata"></video>
+      <video class="reveal" src="../assets/craft/cleo/03.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="stat reveal"><div><div class="big">4×+</div><div class="lbl">first-year sales (tracking)</div></div><div><div class="big">Whole Foods</div><div class="lbl">national launch</div></div></div>
+      <img class="reveal" loading="lazy" src="../assets/craft/cleo/04.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/cleo/06.png" alt="">
+      <img class="reveal half" loading="lazy" src="../assets/craft/cleo/07_HALF.png" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/cleo/08.png" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/cleo/09.png" alt="">
+      <img class="reveal half r" loading="lazy" src="../assets/craft/cleo/10_HALF.png" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/cleo/11.png" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/cleo/12.png" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/cleo/13.png" alt="">
+      <img class="reveal half" loading="lazy" src="../assets/craft/cleo/14_HALF.png" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/cleo/15.png" alt="">
+      <img class="reveal half r" loading="lazy" src="../assets/craft/cleo/16_HALF.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/cleo/19.png" alt="">
+    </div>
+  </section>
+  <section class="cs" id="seven">
+    <div class="panel">
+      <div class="meta"><span>06 / 09</span><span>femtech</span></div>
+      <h3>Smashing<br>generational<br>codes</h3>
+      <div class="blurb">
+        <p>Maternal care in the U.S. felt outdated and fragmented. Seven Starling needed a brand to inspire trust, community and change for a new generation of parents.</p>
+        <p>A positioning and identity that reframed maternal care as modern, expert-led and deeply human — across digital, social, product and experience. The identity went on to be award-nominated.</p>
+      </div>
+      <div class="brand">Seven Starling</div>
+      <div class="role">creative director</div>
+      <video class="icon" src="../assets/craft/seven/icon.mp4" muted loop playsinline preload="metadata"></video>
+    </div>
+    <div class="stream">
+      <video class="reveal" src="../assets/craft/seven/01.mp4" muted loop playsinline preload="metadata"></video>
+      <video class="reveal" src="../assets/craft/seven/02.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="stat reveal"><div><div class="big">$10M+</div><div class="lbl">raised</div></div><div><div class="big">National</div><div class="lbl">scale</div></div><div><div class="big">Award</div><div class="lbl">nominated</div></div></div>
+      <img class="reveal" loading="lazy" src="../assets/craft/seven/03.jpg" alt="">
+      <video class="reveal" src="../assets/craft/seven/04.mp4" muted loop playsinline preload="metadata"></video>
+      <img class="reveal" loading="lazy" src="../assets/craft/seven/05.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/seven/06.jpg" alt="">
+    </div>
+  </section>
+  <section class="quote reveal">
+    <p class="q">“Siobhan and This Works were incredible thought partners in the development of the Seven Starling brand and we couldn't be happier with the end result. Working with Siobhan and This Works was one of the best decisions we've made as a company.”</p>
+    <p class="by">— Tina Beilinson, Co-founder &amp; CEO</p>
+  </section>
+  <section class="divider reveal"><div class="big">All great things<br><em>start within a dream</em></div></section>
+  <section class="cs" id="kooky">
+    <div class="panel">
+      <div class="meta"><span>07 / 09</span><span>design-led living</span></div>
+      <h3>A feeling<br>of home</h3>
+      <div class="blurb">
+        <p>Kooky creates rental apartments that stand apart — thoughtful interiors, lively communal spaces and customisable touches that feel personal.</p>
+        <p>We built a brand to match — vivid, characterful, emotionally resonant — capturing the feeling of home while setting a new standard in design-led living. I oversaw the full creative direction.</p>
+      </div>
+      <div class="brand">Kooky</div>
+      <div class="role">creative director</div>
+      <video class="icon" src="../assets/craft/kooky/icon.mp4" muted loop playsinline preload="metadata"></video>
+    </div>
+    <div class="stream">
+      <img class="reveal" loading="lazy" src="../assets/craft/kooky/01.png" alt="">
+      <video class="reveal" src="../assets/craft/kooky/02.mp4" muted loop playsinline preload="metadata"></video>
+      <img class="reveal" loading="lazy" src="../assets/craft/kooky/03.jpg" alt="">
+      <video class="reveal" src="../assets/craft/kooky/04.mp4" muted loop playsinline preload="metadata"></video>
+      <video class="reveal" src="../assets/craft/kooky/05.mp4" muted loop playsinline preload="metadata"></video>
+      <img class="reveal" loading="lazy" src="../assets/craft/kooky/06.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/kooky/07.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/kooky/08.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/kooky/09.jpg" alt="">
+      <video class="reveal" src="../assets/craft/kooky/10.mp4" muted loop playsinline preload="metadata"></video>
+      <img class="reveal half r" loading="lazy" src="../assets/craft/kooky/11.png" alt="">
+    </div>
+  </section>
+  <section class="cs" id="calico">
+    <div class="panel">
+      <div class="meta"><span>08 / 09</span><span>student living</span></div>
+      <h3>Dreaming up<br>advantage</h3>
+      <div class="blurb">
+        <p>Calico is a 700-room student residence in London's historic garment district, for an international audience after more than just a place to stay.</p>
+        <p>We wove the neighbourhood's textile heritage into a bold, playful identity — colourful still life and patterns inspired by factory brickwork and the rhythm of a sewing machine. Concept to completion — the art direction went on to win awards.</p>
+      </div>
+      <div class="brand">Calico · Niveda Group</div>
+      <div class="role">creative director</div>
+      <video class="icon" src="../assets/craft/calico/icon.mp4" muted loop playsinline preload="metadata"></video>
+    </div>
+    <div class="stream">
+      <img class="reveal" loading="lazy" src="../assets/craft/calico/01.jpg" alt="">
+      <video class="reveal" src="../assets/craft/calico/02.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="stat reveal"><div><div class="big">700</div><div class="lbl">room residence</div></div><div><div class="big">Award</div><div class="lbl">winning art direction</div></div></div>
+      <img class="reveal" loading="lazy" src="../assets/craft/calico/03.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/calico/04.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/calico/05.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/calico/06.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/calico/07.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/calico/08.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/calico/09.jpg" alt="">
+    </div>
+  </section>
+  <section class="cs" id="endless">
+    <div class="panel">
+      <div class="meta"><span>09 / 09</span><span>ai-native</span></div>
+      <h3>Made with AI,<br>end to end</h3>
+      <div class="blurb">
+        <p>I Am Endless makes sun chains and SPF — sun protection you actually want to wear. Brand and art direction built end to end, alongside an AI-driven e-commerce experience.</p>
+        <p>By building with AI, we saved the startup $30K in development and production — proof that AI-native creative can still win on craft.</p>
+      </div>
+      <div class="brand">I Am Endless</div>
+      <div class="role">creative direction · ai-native build</div>
+    </div>
+    <div class="stream">
+      <img class="reveal" loading="lazy" src="../assets/craft/endless/01.svg" alt="I Am Endless">
+      <video class="reveal" src="../assets/craft/endless/02.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="stat reveal"><div><div class="big">$30K</div><div class="lbl">saved with AI · dev + production</div></div><div><div class="big">AI-native</div><div class="lbl">end to end</div></div></div>
+      <img class="reveal" loading="lazy" src="../assets/craft/endless/03.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/endless/04.jpg" alt="">
+      <img class="reveal" loading="lazy" src="../assets/craft/endless/05.jpg" alt="">
+    </div>
+  </section>
+
+  <!-- CLIENT TICKER -->
+  <section class="clients">
+    <div class="label">selected clients</div>
+    <div class="ticker"><div class="ctrack"><img src="../assets/logos/barclays.png" alt=""><img src="../assets/logos/samsung.png" alt=""><img class="box" src="../assets/logos/john-lewis.png" alt=""><img src="../assets/logos/johnson-johnson.png" alt=""><img src="../assets/logos/land-rover.png" alt=""><img src="../assets/logos/cbre.png" alt=""><img src="../assets/logos/etihad.png" alt=""><img src="../assets/logos/descente.png" alt=""><img src="../assets/logos/oly-sheet.svg" alt=""><img src="../assets/logos/cleococo.svg" alt=""><img src="../assets/logos/canvas.svg" alt=""><img src="../assets/logos/seven-starling.svg" alt=""><img src="../assets/logos/moxie.svg" alt=""><img src="../assets/logos/endless.svg" alt=""><img src="../assets/logos/zedwell.png" alt=""></div><div class="ctrack" aria-hidden="true"><img src="../assets/logos/barclays.png" alt=""><img src="../assets/logos/samsung.png" alt=""><img class="box" src="../assets/logos/john-lewis.png" alt=""><img src="../assets/logos/johnson-johnson.png" alt=""><img src="../assets/logos/land-rover.png" alt=""><img src="../assets/logos/cbre.png" alt=""><img src="../assets/logos/etihad.png" alt=""><img src="../assets/logos/descente.png" alt=""><img src="../assets/logos/oly-sheet.svg" alt=""><img src="../assets/logos/cleococo.svg" alt=""><img src="../assets/logos/canvas.svg" alt=""><img src="../assets/logos/seven-starling.svg" alt=""><img src="../assets/logos/moxie.svg" alt=""><img src="../assets/logos/endless.svg" alt=""><img src="../assets/logos/zedwell.png" alt=""></div></div>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="end" id="contact">
+    <div class="label">thank you</div>
+    <h4>Tommy &amp; the<br>Craft team.</h4>
+    <p class="sub">Open to creative direction — freelance, contract or full-time.</p>
+    <div class="contact">
+      <a class="mail" href="mailto:siobhan@thisworks.studio">siobhan@thisworks.studio</a>
+      <a class="mail" href="tel:+18622131944">+1 862-213-1944</a>
+    </div>
+    <p class="ai">Currently building with AI every day — and an advisor to <b>AI After 5</b>, a community helping women create with AI.</p>
+    <p class="fine">private folio · please don't share publicly · siobhanfrost.com</p>
+  </section>
+
+</main>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// videos play only while on screen
+const vio=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){v.play().catch(()=>{})}else{v.pause()}}),{threshold:.25});
+document.querySelectorAll('video').forEach(v=>vio.observe(v));
+
+const hud=document.getElementById('hud');
+new IntersectionObserver(es=>es.forEach(e=>{hud.classList.toggle('show',!e.isIntersecting)}),{threshold:.2}).observe(document.querySelector('.hero'));
+
+const items=[...document.querySelectorAll('#hud-list li')];
+const nEl=document.getElementById('hud-n'),bar=document.getElementById('hud-bar'),chipN=document.getElementById('chip-n');
+function refresh(){const d=items.filter(li=>li.classList.contains('done')).length;nEl.textContent=d;if(chipN)chipN.textContent=d;bar.style.width=(d/items.length*100)+'%';}
+function fire(id){items.forEach(li=>{if(!li.classList.contains('done')&&li.dataset.trigger.split(' ').includes(id))li.classList.add('done')});refresh();}
+const cio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)fire(e.target.id)}),{rootMargin:'-45% 0px -45% 0px',threshold:0});
+document.querySelectorAll('.cs[id]').forEach(s=>cio.observe(s));
+const chip=document.getElementById('hudChip');
+if(chip)chip.addEventListener('click',()=>hud.classList.toggle('open'));
+new IntersectionObserver(es=>es.forEach(e=>{hud.classList.toggle('on-dark',e.isIntersecting&&matchMedia('(min-width:1101px)').matches)}),{rootMargin:'-80px 0px -80% 0px',threshold:0}).observe(document.querySelector('.end'));
+</script>
+<script data-goatcounter="https://siobhanfrost.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
