@@ -504,6 +504,16 @@ const chip=document.getElementById('hudChip');
 if(chip)chip.addEventListener('click',()=>hud.classList.toggle('open'));
 new IntersectionObserver(es=>es.forEach(e=>{hud.classList.toggle('on-dark',e.isIntersecting&&matchMedia('(min-width:1101px)').matches)}),{rootMargin:'-80px 0px -80% 0px',threshold:0}).observe(document.querySelector('.end'));
 </script>
+<script>
+// Per-recipient tagging: a link like /AllisonStephen/?to=allison records
+// separately in GoatCounter so you can see WHO opened it, not just that someone did.
+window.goatcounter = {
+  path: function(p) {
+    var to = new URLSearchParams(location.search).get('to');
+    return to ? p + '?to=' + to.toLowerCase().replace(/[^a-z0-9_-]/g, '') : p;
+  }
+};
+</script>
 <script data-goatcounter="https://siobhanfrost.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
