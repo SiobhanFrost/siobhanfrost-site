@@ -500,6 +500,24 @@ const chip=document.getElementById('hudChip');
 if(chip)chip.addEventListener('click',()=>hud.classList.toggle('open'));
 new IntersectionObserver(es=>es.forEach(e=>{hud.classList.toggle('on-dark',e.isIntersecting&&matchMedia('(min-width:1101px)').matches)}),{rootMargin:'-80px 0px -80% 0px',threshold:0}).observe(document.querySelector('.end'));
 </script>
+<script>
+// Real-time open notification (folio page): pings Make webhook on open.
+// Owner opt-out: open this page with ?me=1 once per device to silence your own visits.
+(function(){
+  try{
+    var q = new URLSearchParams(location.search);
+    if(q.get('me')){ try{ localStorage.setItem('sf_owner','1'); }catch(e){} return; }
+    try{ if(localStorage.getItem('sf_owner')) return; }catch(e){}
+    var to = (q.get('to') || 'direct').toLowerCase().replace(/[^a-z0-9_-]/g,'') || 'direct';
+    var img = new Image();
+    img.src = "https://hook.us2.make.com/jol6qcc9mx25vrkae5rw8wd11k45fdej"
+      + "?to=" + encodeURIComponent(to)
+      + "&page=brooklinen"
+      + "&ref=" + encodeURIComponent(document.referrer || 'direct')
+      + "&ts=" + Date.now();
+  }catch(e){}
+})();
+</script>
 <script data-goatcounter="https://siobhanfrost.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
