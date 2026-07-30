@@ -505,21 +505,26 @@ if(chip)chip.addEventListener('click',()=>hud.classList.toggle('open'));
 new IntersectionObserver(es=>es.forEach(e=>{hud.classList.toggle('on-dark',e.isIntersecting&&matchMedia('(min-width:1101px)').matches)}),{rootMargin:'-80px 0px -80% 0px',threshold:0}).observe(document.querySelector('.end'));
 </script>
 <script>
-// Real-time open notification: pings a Make webhook when the folio is opened.
-// Owner opt-out: visit .../AllisonStephen/?me=1 once per device to silence your
-// own visits (sets a local flag). Recipients (who never do that) always notify.
+// Real-time open alert: client-side POST to Web3Forms (emails hello@thisworks.studio).
+// Owner opt-out: open any folio page with ?me=1 once per device to silence your own visits.
 (function(){
   try{
     var q = new URLSearchParams(location.search);
     if(q.get('me')){ try{ localStorage.setItem('sf_owner','1'); }catch(e){} return; }
     try{ if(localStorage.getItem('sf_owner')) return; }catch(e){}
     var to = (q.get('to') || 'direct').toLowerCase().replace(/[^a-z0-9_-]/g,'') || 'direct';
-    var img = new Image();
-    img.src = "https://hook.us2.make.com/jol6qcc9mx25vrkae5rw8wd11k45fdej"
-      + "?to=" + encodeURIComponent(to)
-      + "&page=AllisonStephen"
-      + "&ref=" + encodeURIComponent(document.referrer || 'direct')
-      + "&ts=" + Date.now();
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: '5f4023fa-d3b5-461d-96bf-067830bf050e',
+        subject: '👀 Folio opened: AllisonStephen',
+        from_name: 'siobhanfrost.com alerts',
+        page: 'AllisonStephen',
+        recipient_tag: to,
+        came_from: document.referrer || 'direct'
+      })
+    }).catch(function(){});
   }catch(e){}
 })();
 </script>
