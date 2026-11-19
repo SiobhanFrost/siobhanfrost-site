@@ -5,19 +5,73 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Siobhan Frost</title>
 <meta name="description" content="Siobhan Frost" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="interact/assets/name/S.webp">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%}
-body{background:#fff;color:#121110;font-family:"Inter",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
-  display:flex;align-items:center;justify-content:center;letter-spacing:-.03em;-webkit-font-smoothing:antialiased}
-h1{font-weight:600;font-size:clamp(2.6rem,9vw,6.5rem);line-height:.9}
+body{background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
+h1{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;row-gap:0;max-width:94vw;font-size:0}
+.word{display:flex;align-items:flex-end}
+.gap{flex:none}
+.ltr{flex:none;position:relative}
+.ltr .rise{display:block;transform:translateY(40px);opacity:0;animation:rise 1.4s cubic-bezier(.34,1.45,.5,1) forwards}
+.ltr .bob{display:block;transform-origin:50% 100%;animation:bob var(--d,6s) ease-in-out var(--dl,0s) infinite alternate}
+.ltr img{display:block;width:100%;height:auto;transform-origin:50% 92%;transform:rotate(var(--rot,0deg));transition:transform .9s cubic-bezier(.34,1.45,.5,1);user-select:none;-webkit-user-drag:none}
+.ltr:hover img{transform:rotate(calc(var(--rot,0deg) * -.6)) translateY(-7%) scale(1.04)}
+@keyframes rise{to{transform:none;opacity:1}}
+@keyframes bob{
+  0%{transform:translate(0,0) rotate(0deg)}
+  50%{transform:translate(var(--dx,1px),var(--dy,-6px)) rotate(var(--r1,.8deg))}
+  100%{transform:translate(calc(var(--dx,1px) * -1),calc(var(--dy,-6px) * .7)) rotate(var(--r2,-.6deg))}
+}
+@media (prefers-reduced-motion:reduce){.ltr .rise,.ltr .bob{animation:none;opacity:1;transform:none}}
 </style>
 </head>
 <body>
-  <h1>Siobhan Frost</h1>
+  <h1 id="name" aria-label="Siobhan Frost"></h1>
+<script>
+(() => {
+  // Balloon letters: [file, natural width, tilt]. Lowercase 'o' and 'rost' sit a touch smaller than the capitals.
+  const WORDS = [
+    [['S',362,-2],['i',141,3],['o',306*.84,-1.5],['b',271,2],['h',298,-1],['a',282,3.5],['n',281,-2]],
+    [['F',321,-3],['r',311*.84,-4],['o2',376*.84,5],['s',362*.84,-6],['t',331*.84,7]]
+  ];
+  const OVERLAP = .16, el = document.getElementById('name');
+  const sum = w => w.reduce((a,l) => a + l[1], 0) * (1-OVERLAP);
+  const W1 = sum(WORDS[0]), W2 = sum(WORDS[1]), GAP = 120;
+  const spans = [];
+  let k = 0;
+  WORDS.forEach((word, wi) => {
+    const wEl = document.createElement('span'); wEl.className = 'word';
+    word.forEach(([key, w, rot]) => {
+      const s = document.createElement('span'); s.className = 'ltr'; s.dataset.w = w;
+      s.style.setProperty('--rot', rot+'deg');
+      s.style.setProperty('--d', (5.2 + (k*1.37)%3.1).toFixed(2)+'s');
+      s.style.setProperty('--dl', (-(k*0.83)%5).toFixed(2)+'s');
+      s.style.setProperty('--dx', ((k%2?1:-1)*(1+k%3))+'px');
+      s.style.setProperty('--dy', (-(4 + (k*7)%5))+'px');
+      s.style.setProperty('--r1', ((k%2?1:-1)*(0.6+(k%3)*0.4)).toFixed(2)+'deg');
+      s.style.setProperty('--r2', ((k%2?-1:1)*(0.5+(k%4)*0.3)).toFixed(2)+'deg');
+      s.innerHTML = `<span class="rise" style="animation-delay:${(0.15 + k*0.07).toFixed(2)}s"><span class="bob"><img src="interact/assets/name/${key}.webp" alt="" draggable="false"></span></span>`;
+      wEl.appendChild(s); spans.push(s); k++;
+    });
+    el.appendChild(wEl);
+    if (wi === 0){ const g = document.createElement('span'); g.className = 'gap'; el.appendChild(g); }
+  });
+  const gapEl = el.querySelector('.gap');
+  function layout(){
+    const vw = innerWidth, vh = innerHeight;
+    const oneLine = vw > 760;
+    // one line on wider screens, two stacked lines on phones; capped by height either way
+    let u = oneLine ? Math.min(vw*0.86 / (W1 + GAP + W2), vh*0.3/345)
+                    : Math.min(vw*0.9 / W1, vh*0.2/345);
+    spans.forEach(s => { const w = +s.dataset.w * u; s.style.width = w+'px'; s.style.marginRight = (-w*OVERLAP)+'px'; });
+    gapEl.style.width = oneLine ? (GAP*u)+'px' : '0px';
+    gapEl.style.flexBasis = oneLine ? 'auto' : '100%';
+  }
+  layout(); addEventListener('resize', layout);
+})();
+</script>
   <script data-goatcounter="https://siobhanfrost.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
