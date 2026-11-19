@@ -278,6 +278,44 @@ h2{font-family:var(--serif);font-weight:300;font-size:clamp(34px,3.05vw,56px);li
   els.forEach(el => io.observe(el));
 })();
 </script>
+<script>
+// Visit alert (same setup as the rest of siobhanfrost.com): emails Siobhan when someone opens this page.
+// Add ?to=name to a link to see who opened it. Open any page once with ?me=1 to stop alerts from your own browser.
+(function(){
+  try{
+    var q = new URLSearchParams(location.search);
+    if(q.get('me')){ try{ localStorage.setItem('sf_owner','1'); }catch(e){} return; }
+    try{ if(localStorage.getItem('sf_owner')) return; }catch(e){}
+    var to = (q.get('to') || '').toLowerCase().replace(/[^a-z0-9_-]/g,'');
+    try{
+      if(to) sessionStorage.setItem('sf_to', to); else to = sessionStorage.getItem('sf_to') || 'direct';
+      if(sessionStorage.getItem('sf_seen_interact/cv')) return;   // one alert per page per visit
+      sessionStorage.setItem('sf_seen_interact/cv','1');
+    }catch(e){ to = to || 'direct'; }
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: '5f4023fa-d3b5-461d-96bf-067830bf050e',
+        subject: '👀 Folio opened: interact/cv',
+        from_name: 'siobhanfrost.com alerts',
+        page: 'interact/cv',
+        recipient_tag: to,
+        came_from: document.referrer || 'direct'
+      })
+    }).catch(function(){});
+  }catch(e){}
+})();
+</script>
+<script>
+window.goatcounter = {
+  path: function(p) {
+    var to = new URLSearchParams(location.search).get('to');
+    try{ to = to || sessionStorage.getItem('sf_to'); }catch(e){}
+    return to ? p + '?to=' + String(to).toLowerCase().replace(/[^a-z0-9_-]/g, '') : p;
+  }
+};
+</script>
 <script data-goatcounter="https://siobhanfrost.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
