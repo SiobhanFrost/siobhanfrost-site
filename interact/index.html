@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Siobhan Frost, Creative Director (Brand)</title>
+<meta name="description" content="Siobhan Frost, Creative Director. Selected work for Interact.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..700&family=Newsreader:opsz,wght@6..72,200..500&display=swap" rel="stylesheet">
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/onsite-condensed-medium.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/tiempos-headline-light.woff2" crossorigin>
+<link rel="preload" as="image" href="assets/img/spf.webp">
+<style>
+@font-face{font-family:"Onsite Condensed";src:url("assets/fonts/onsite-condensed-medium.woff2") format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:"Tiempos Headline";src:url("assets/fonts/tiempos-headline-light.woff2") format("woff2");font-weight:100 900;font-display:swap}
+/* Figma frame is 1728 x 1117. Everything below maps to it in % so the grid scales with the window. */
+:root{
+  --ink:#0d0d0d; --line:#9a9a9a; --bg:#fff;
+  --gutter:2.49vw;               /* 43 / 1728 */
+  --label:clamp(13px,1.16vw,22px); /* 20 / 1728 */
+  --ease:cubic-bezier(.22,.8,.18,1);
+  --spring:cubic-bezier(.34,1.45,.5,1);
+  --cond:"Onsite Condensed","Archivo",system-ui,sans-serif;
+  --floor-x:max(10px,.9vw); --floor-y:0px;
+  --serif:"Tiempos Headline","Newsreader",Georgia,serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:var(--bg);color:var(--ink)}
+body{font-family:var(--cond);font-stretch:72%;-webkit-font-smoothing:antialiased;font-synthesis:none;overflow:hidden}
+a{color:inherit;text-decoration:none}
+
+.stage{position:relative;width:100%;height:100vh;height:100svh;min-height:540px;overflow:hidden}
+
+/* header */
+.role{position:absolute;right:var(--gutter);top:2.4%;z-index:6;display:flex;align-items:baseline;gap:.32em;
+  font-size:clamp(20px,2.03vw,40px);line-height:1;opacity:0;transform:translateY(-8px);animation:in .9s var(--ease) .2s forwards}
+.role .t{font-family:var(--serif);font-weight:300;letter-spacing:-.015em;font-optical-sizing:auto}
+.role .b{font-family:var(--cond);font-weight:600;font-stretch:72%;font-size:.89em;letter-spacing:.005em}
+.role{transition:color .35s var(--ease), opacity .9s var(--ease), transform .9s var(--ease)}
+.role:hover,.role:focus-visible{color:rgba(13,13,13,.5);outline:none}
+
+/* rules */
+.rule{position:absolute;left:var(--gutter);right:var(--gutter);height:1px;background:var(--line);transform:scaleX(0);transform-origin:left;
+  animation:draw 1.1s var(--ease) forwards}
+@keyframes draw{to{transform:scaleX(1)}}
+.rule{z-index:1}
+.rule.over{z-index:4}   /* the two keylines framing the open image run over its top and bottom edge */
+
+/* index items */
+.item{position:absolute;z-index:2;display:inline-flex;align-items:center;gap:1.3em;transform:translateY(-50%);
+  font-size:var(--label);font-weight:400;letter-spacing:.01em;line-height:1;white-space:nowrap;padding:.7em 0;
+  color:var(--ink);transition:opacity .35s var(--ease)}
+.item>span{opacity:0;animation:fade .8s var(--ease) var(--in,0s) forwards}
+.item .txt{display:inline-block;transform:translateX(0);transition:transform .75s var(--ease)}
+.item .dot{width:.9em;height:.9em;border:1px solid currentColor;border-radius:50%;flex:none;position:relative}
+.item .dot::after{content:"";position:absolute;inset:-1px;border-radius:50%;background:currentColor;transform:scale(0);transition:transform .4s var(--spring)}
+.item.r{transform:translate(0,-50%)}
+.is-hovering .item{opacity:.3}
+.is-hovering .item.on{opacity:1}
+.item.on .dot::after{transform:scale(1)}
+.item.on .dot{border-color:#fff;box-shadow:0 1px 6px rgba(0,0,0,.22)}
+.item.on .dot::after{background:#fff}
+.item .dot{transition:border-color .3s var(--ease), box-shadow .3s var(--ease)}
+.item.on{z-index:4}
+.item:focus-visible{outline:none}
+.item:focus-visible .txt{text-decoration:underline;text-underline-offset:4px}
+
+/* reveal images */
+.reveal{position:absolute;z-index:3;pointer-events:none;overflow:hidden;
+  clip-path:inset(0 0 0 100%);transition:clip-path .75s var(--ease);will-change:clip-path}
+.reveal.from-l{clip-path:inset(0 100% 0 0)}
+.reveal.from-c{clip-path:inset(0 50% 0 50%)}
+.reveal img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.14);transition:transform 1.1s var(--ease)}
+.reveal.clear{--tilt:20deg;z-index:5;overflow:visible;clip-path:none!important;opacity:0;transform:translateY(18px) rotate(var(--tilt,-7deg)) scale(.9);
+  transition:opacity .5s var(--ease), transform 1s var(--spring)}
+.reveal.clear.show{opacity:1;transform:rotate(var(--tilt,-7deg))}
+.reveal.clear img{object-fit:contain;transform:none!important;filter:drop-shadow(0 28px 34px rgba(0,0,0,.12));animation:float 5.5s ease-in-out infinite alternate}
+@keyframes float{0%{translate:0 0;rotate:0deg}50%{translate:0 -10px;rotate:1.2deg}100%{translate:0 -4px;rotate:-.8deg}}
+.reveal.show{clip-path:inset(0 0 0 0)}
+.reveal.show img{transform:scale(1.05)}
+.reveal .par{width:100%;height:100%;transition:transform .9s var(--ease)}
+
+/* balloon name */
+.name{position:absolute;left:var(--floor-x);bottom:var(--floor-y);z-index:5;display:flex;align-items:flex-end;flex-wrap:nowrap;pointer-events:none}
+.name .gap{flex:none}
+.name .br{display:none}
+.ltr{flex:none;position:relative;pointer-events:auto;cursor:default}
+.ltr .rise{display:block;transform:translateY(130%);animation:rise 1.5s var(--spring) forwards}
+.ltr .bob{display:block;transform-origin:50% 100%;animation:bob var(--d,6s) ease-in-out var(--dl,0s) infinite alternate}
+.ltr img{display:block;width:100%;height:auto;transform-origin:50% 92%;transform:translateY(var(--sink,0%)) rotate(var(--rot,0deg));transition:transform .9s var(--spring);user-select:none;-webkit-user-drag:none}
+.ltr:hover img{transform:translateY(calc(var(--sink,0%) - 7%)) rotate(calc(var(--rot,0deg) * -.6)) scale(1.04)}
+@keyframes rise{to{transform:translateY(0)}}
+@keyframes bob{
+  0%{transform:translate(0,0) rotate(0deg)}
+  50%{transform:translate(var(--dx,1px),var(--dy,-6px)) rotate(var(--r1,.8deg))}
+  100%{transform:translate(calc(var(--dx,1px) * -1),calc(var(--dy,-6px) * .7)) rotate(var(--r2,-.6deg))}
+}
+@keyframes in{to{opacity:1;transform:none}}
+@keyframes fade{to{opacity:1}}
+
+/* page-leave cover */
+.fly{position:fixed;z-index:50;overflow:hidden;pointer-events:none}
+.fly img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.fly.clear{background:#efede6}
+.fly.clear img{object-fit:contain}
+.wipe{position:fixed;inset:0;z-index:49;background:#fff;opacity:0;pointer-events:none;transition:opacity .45s var(--ease)}
+.wipe.go{opacity:1}
+
+/* hint for touch */
+.hint{position:absolute;left:50%;z-index:6;transform:translate(-50%,8px);font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  background:var(--ink);color:#fff;padding:.7em 1.1em;border-radius:99px;opacity:0;transition:opacity .3s var(--ease),transform .4s var(--ease);pointer-events:none;white-space:nowrap}
+.hint.show{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:760px){
+  :root{--gutter:16px;--label:13px}
+  .role{top:22px;font-size:22px}
+  .name{width:calc(100vw - var(--floor-x) * 2)}
+  .name .sur{display:none}   /* phones show 'Siobhan' only */
+  .name .gap{display:none}
+  .reveal{z-index:6}
+  .item.on{z-index:7}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .ltr .bob{animation:none}
+}
+</style>
+</head>
+<body>
+<main class="stage" id="stage">
+  <a class="role" href="cv/" data-slug="cv" aria-label="Creative Director (Brand): CV">
+    <span class="t">Creative Director</span><span class="b">(BRAND)</span>
+  </a>
+  <div id="rules" aria-hidden="true"></div>
+  <nav id="items" aria-label="Work"></nav>
+  <div id="reveals" aria-hidden="true"></div>
+  <div class="name" id="name" role="img" aria-label="Siobhan Frost"></div>
+  <div class="hint" id="hint">Tap again to open</div>
+</main>
+<div class="wipe" id="wipe"></div>
+
+<script>
+(() => {
+  const FW = 1728, FH = 1117;
+  // Grid rules, y in Figma px
+  const RULES = [101,196,279,360,450,536,631,728,821,911,1023];
+
+  // Index points. x = where the dot+label group starts (or ends, for right-anchored). y = vertical centre.
+  // img: the hover image box from the Figma hover frames (x, y, w, h).
+  const ITEMS = [
+    // span: [rule above, rule below] by index into RULES. ratio: image box width / height.
+    {slug:'dtc',           label:'DTC',           x:309,  y:148, dot:'after',  anchor:'l', span:[0,5],  ratio:1.0,  src:'d2c', clear:true},
+    {slug:'brand-studio',  label:'BRAND STUDIO',  x:45,   y:319, dot:'after',  anchor:'l', span:[2,6],  ratio:1.6,  src:'brand-studio', href:'https://www.thisworks.studio/work/kooky'},
+    {slug:'beer',          label:'BEER',          x:848,  y:148, dot:'before', anchor:'l', span:[0,4],  ratio:1.38, src:'beer'},
+    {slug:'personal-care', label:'PERSONAL CARE', x:145,  y:680, dot:'after',  anchor:'l', span:[5,10],  ratio:0.88, src:'personal-care'},
+    {slug:'spf',           label:'SPF',           x:1285, y:404, dot:'before', anchor:'l', span:[1,6],  ratio:0.83, src:'spf'},
+    {slug:'coffee',        label:'COFFEE',        x:643,  y:493, dot:'before', anchor:'l', span:[0,5],  ratio:0.84, src:'coffee'},
+    {slug:'art-direction', label:'ART DIRECTION', x:1672, y:586, dot:'before', anchor:'r', span:[5,10], ratio:1.03, src:'art-direction'},
+    {slug:'food',          label:'FOOD',          x:1173, y:772, dot:'after',  anchor:'r', span:[5,10], ratio:0.86, src:'food'},
+  ];
+
+  // Balloon letters (natural px size of each slice) + resting tilt
+  // lowercase sits a little smaller than the capitals: the 'o' in Siobhan and 'rost'
+  const SMALL = {o:.84, r:.84, o2:.84, s:.84, t:.84};
+  const LETTERS = [
+    ['S',362,341,-2,0.59],['i',141,345,3,1.54],['o',306,332,-1.5,1.35],['b',271,340,2,1.72],['h',298,346,-1,0.93],['a',282,318,3.5,2.06],['n',281,310,-2,0.4],
+    'br',
+    ['F',321,379,-3,-0.1],['r',311,338,-4,-0.74],['o2',376,360,5,1.61],['s',362,377,-6,-0.73],['t',331,376,7,1.3],
+  ];
+
+  const stage = document.getElementById('stage');
+  const isLocal = !/siobhanfrost\.com$/.test(location.hostname);
+  const href = s => isLocal ? `${s}/index.html` : `${s}/`;
+  document.querySelector('.role').setAttribute('href', href('cv'));
+
+  // rules
+  const rulesEl = document.getElementById('rules');
+  const ruleEls = RULES.map((y,i) => {
+    const d = document.createElement('div');
+    d.className = 'rule';
+    d.style.top = (y/FH*100)+'%';
+    d.style.animationDelay = (0.05 + i*0.06)+'s';
+    rulesEl.appendChild(d);
+    return d;
+  });
+
+  // items + reveals
+  const itemsEl = document.getElementById('items'), revEl = document.getElementById('reveals');
+  const nodes = ITEMS.map((it,i) => {
+    const a = document.createElement('a');
+    a.className = `item ${it.dot}` + (it.anchor==='r' ? ' r' : '');
+    a.href = it.href || href(it.slug);
+    if (it.href){ a.target = '_blank'; a.rel = 'noopener'; }   // external: opens in a new tab
+    a.dataset.i = i;
+    a.style.top = (it.y/FH*100)+'%';
+    if (it.anchor==='l') a.style.left = (it.x/FW*100)+'%';
+    else a.style.right = ((FW-it.x)/FW*100)+'%';
+    a.style.setProperty('--in', (0.55 + i*0.07)+'s');
+    const dot = '<span class="dot" aria-hidden="true"></span>', txt = `<span class="txt">${it.label}</span>`;
+    a.innerHTML = it.dot==='before' ? dot+txt : txt+dot;
+    itemsEl.appendChild(a);
+
+    const r = document.createElement('div');
+    r.className = 'reveal' + (it.clear ? ' clear' : '');
+    r.innerHTML = `<div class="par"><img src="assets/img/${it.src}.webp" alt="" decoding="async"></div>`;
+    revEl.appendChild(r);
+    return {it, a, r, par:r.firstChild, img:r.querySelector('img'), dot:a.querySelector('.dot'), txt:a.querySelector('.txt')};
+  });
+
+  // name
+  const nameEl = document.getElementById('name');
+  const letterEls = [];
+  let k = 0, sur = false;
+  LETTERS.forEach(L => {
+    if (L === 'br') {
+      sur = true;
+      const g = document.createElement('span'); g.className = 'gap'; nameEl.appendChild(g);
+      const b = document.createElement('span'); b.className = 'br'; nameEl.appendChild(b);
+      return;
+    }
+    const [key,w,h,rot,sink] = L;
+    const s = document.createElement('span');
+    s.className = 'ltr' + (sur ? ' sur' : '');
+    s.dataset.w = w * (SMALL[key] || 1);
+    s.style.setProperty('--rot', rot+'deg');
+    s.style.setProperty('--sink', sink+'%');
+    s.style.setProperty('--d', (5.2 + (k*1.37)%3.1).toFixed(2)+'s');
+    s.style.setProperty('--dl', (-(k*0.83)%5).toFixed(2)+'s');
+    s.style.setProperty('--dx', ((k%2?1:-1)*(1+k%3)).toFixed(0)+'px');
+    s.style.setProperty('--dy', (-(4 + (k*7)%5)).toFixed(0)+'px');
+    s.style.setProperty('--r1', ((k%2?1:-1)*(0.6+(k%3)*0.4)).toFixed(2)+'deg');
+    s.style.setProperty('--r2', ((k%2?-1:1)*(0.5+(k%4)*0.3)).toFixed(2)+'deg');
+    s.innerHTML = `<span class="rise" style="animation-delay:${(0.35 + k*0.07).toFixed(2)}s"><span class="bob"><img src="assets/name/${key}.webp" alt="" draggable="false"></span></span>`;
+    nameEl.appendChild(s);
+    letterEls.push(s);
+    k++;
+  });
+
+
+  // Sit "Creative Director (BRAND)" dead centre between the top of the browser and the first keyline,
+  // measured on the letters themselves (cap top to baseline), not the text box.
+  function centreRole(role, lineY, setTop){
+    const t = role.querySelector('.t'); if (!t) return;
+    const cs = getComputedStyle(t), fs = parseFloat(cs.fontSize);
+    const cx = document.createElement('canvas').getContext('2d');
+    cx.font = `${cs.fontWeight} ${fs}px ${cs.fontFamily}`;
+    const m = cx.measureText('Creative Director');
+    const capTop = m.actualBoundingBoxAscent;                       // ink above the baseline
+    const fA = m.fontBoundingBoxAscent, fD = m.fontBoundingBoxDescent;
+    const lh = parseFloat(getComputedStyle(role).lineHeight) || fs;
+    const baselineInBox = (lh - (fA + fD))/2 + fA;                    // baseline from top of the line box
+    const baselineTarget = lineY/2 + capTop/2;
+    setTop(Math.round((baselineTarget - baselineInBox)*2)/2);
+  }
+
+  // ---------- layout ----------
+  const OVERLAP = 0.16;        // letters tuck into each other, like the Figma
+  const SUM1 = 362+141+306*.84+271+298+282+281, SUM2 = 321+(311+376+362+331)*.84;
+  let mobile = false, W = 0, H = 0;
+
+  function layout(){
+    W = stage.clientWidth; H = stage.clientHeight;
+    mobile = W <= 760;
+
+    // name scale: desktop one line ~82% of width, capped by height; mobile two lines
+    let u;
+    if (!mobile){
+      const total = (SUM1+SUM2)*(1-OVERLAP) + 120;
+      u = Math.min(W*0.85/total, H*0.185/345);
+    } else {
+      u = Math.min((W-28)*0.98/(SUM1*(1-OVERLAP) + 362*OVERLAP), H*0.16/345);
+    }
+    letterEls.forEach((s,i) => {
+      const w = +s.dataset.w * u;
+      s.style.width = w+'px';
+      s.style.marginRight = (-w*OVERLAP)+'px';
+    });
+    nameEl.querySelector('.gap').style.width = (120*u)+'px';
+
+    // keylines snap to whole pixels so image edges can meet them exactly
+    const ry = RULES.map(y => Math.round(y/FH*H));
+    ruleEls.forEach((d,i) => d.style.top = ry[i]+'px');
+    centreRole(document.querySelector('.role'), ry[0], v => document.querySelector('.role').style.top = v+'px');
+    const g = parseFloat(getComputedStyle(stage).getPropertyValue('--gutter')) || 16;
+    const gutterPx = mobile ? 16 : W*0.0249;
+
+    // reveal boxes: top edge on one keyline, bottom edge on another (covers both 1px lines)
+    nodes.forEach(n => {
+      const [ta, tb] = n.it.span;
+      const top = ry[ta], bh = ry[tb] - ry[ta] + 1;
+      let bw = Math.round(bh * n.it.ratio), left;
+      n.r.classList.remove('from-l','from-c');
+      if (!mobile){
+        // Image edge lands dead centre in the gap between word and circle. Both stay put; the circle inverts over the image.
+        const ir = n.a.getBoundingClientRect(), sr = stage.getBoundingClientRect();
+        const itemL = ir.left - sr.left;
+        const tL = itemL + n.txt.offsetLeft, tR = tL + n.txt.offsetWidth;
+        const dC = itemL + n.dot.offsetLeft + n.dot.offsetWidth/2;
+        const dEdgeR = dC + n.dot.offsetWidth/2, dEdgeL = dC - n.dot.offsetWidth/2;
+        if (n.it.dot === 'before'){
+          const right = Math.round((dEdgeR + tL)/2);   // dead centre between circle and word
+          bw = Math.min(bw, right - gutterPx);
+          left = right - bw;
+        } else {
+          left = Math.round((tR + dEdgeL)/2);          // dead centre between word and circle
+          bw = Math.min(bw, W - gutterPx - left);
+          n.r.classList.add('from-l');
+        }
+      } else {
+        bw = Math.min(bw, Math.round(W - gutterPx*2));
+        left = Math.round((W - bw)/2);
+        n.r.classList.add('from-c');
+      }
+      if (n.it.clear){
+        const s2 = Math.round(mobile ? Math.min(0.6*H, W*0.95) : 738/FH*H);
+        let top = mobile ? H*0.1 : 0;
+        if (!mobile && cutout){
+          // Place the cutout by its actual silhouette (after tilt): whole head on screen,
+          // and its edge just covering the circle.
+          const ir = n.a.getBoundingClientRect(), sr = stage.getBoundingClientRect();
+          const dr = n.dot.getBoundingClientRect();
+          const dotL = dr.left - sr.left, dotY = dr.top - sr.top + dr.height/2;
+          const th = (parseFloat(getComputedStyle(n.r).getPropertyValue('--tilt')) || -7) * Math.PI/180;
+          const k = s2 / cutout.n, c = Math.cos(th), sn = Math.sin(th), h = s2/2;
+          const pts = cutout.pts.map(([x,y]) => { const dx = x*k - h, dy = y*k - h; return [h + dx*c - dy*sn, h + dx*sn + dy*c]; });
+          const minY = Math.min(...pts.map(p => p[1]));
+          top = Math.max(10, H*0.012) - minY;
+          const row = pts.filter(p => Math.abs(p[1] + top - dotY) < k*1.5);
+          const minX = row.length ? Math.min(...row.map(p => p[0])) : Math.min(...pts.map(p => p[0]));
+          left = dotL - 6 - minX;   // small margin so the bob never uncovers the circle
+        } else if (mobile) left = (W - s2)/2;
+        Object.assign(n.r.style, {left:left+'px', top:top+'px', width:s2+'px', height:s2+'px'});
+        return;
+      }
+      Object.assign(n.r.style, {left:left+'px', top:top+'px', width:bw+'px', height:bh+'px'});
+    });
+  }
+  let cutout = null;
+  (() => {
+    const n = nodes.find(n => n.it.clear); if (!n) return;
+    const run = () => {
+      const N = 160, cv = document.createElement('canvas'); cv.width = cv.height = N;
+      const cx = cv.getContext('2d'); cx.drawImage(n.img, 0, 0, N, N);
+      let d; try { d = cx.getImageData(0,0,N,N).data; } catch(e){ return; }
+      const pts = [];
+      for (let y=0; y<N; y++) for (let x=0; x<N; x++) if (d[(y*N+x)*4+3] > 120) pts.push([x+.5, y+.5]);
+      cutout = {n:N, pts}; layout();
+    };
+    n.img.complete && n.img.naturalWidth ? run() : n.img.addEventListener('load', run);
+  })();
+  layout();
+  addEventListener('resize', layout);
+  document.fonts && document.fonts.ready.then(layout);
+
+  // ---------- interaction ----------
+  let active = null;
+  const show = n => {
+    if (active === n) return;
+    if (active) hide(active);
+    active = n;
+    stage.classList.add('is-hovering');
+    n.a.classList.add('on'); n.r.classList.add('show');
+    if (!n.it.clear) n.it.span.forEach(i => ruleEls[i].classList.add('over'));
+  };
+  const hide = n => {
+    n.a.classList.remove('on'); n.r.classList.remove('show');
+    n.it.span.forEach(i => ruleEls[i].classList.remove('over'));
+    if (active === n) active = null;
+    if (!active) stage.classList.remove('is-hovering');
+  };
+
+  let touch = matchMedia('(hover:none)').matches;
+  addEventListener('pointerdown', e => { touch = e.pointerType === 'touch' || (e.pointerType !== 'mouse' && touch); }, true);
+  const hint = document.getElementById('hint');
+
+  nodes.forEach(n => {
+    n.a.addEventListener('mouseenter', () => !touch && show(n));
+    n.a.addEventListener('mouseleave', () => !touch && hide(n));
+    n.a.addEventListener('focus', () => show(n));
+    n.a.addEventListener('blur', () => hide(n));
+    n.a.addEventListener('pointerdown', e => { n.pre = active === n; });
+    n.a.addEventListener('click', e => {
+      if (n.it.href){
+        // external link: first tap on touch previews, otherwise let the browser open the new tab
+        if (touch && !n.pre){ e.preventDefault(); n.pre = true; show(n);
+          const rr = n.r.getBoundingClientRect(); hint.style.top = Math.min(rr.bottom + 14, H - 60) + 'px'; hint.classList.add('show'); }
+        return;
+      }
+      e.preventDefault();
+      if (touch && !n.pre){
+        n.pre = true;
+        show(n);
+        const rr = n.r.getBoundingClientRect();
+        hint.style.top = Math.min(rr.bottom + 14, H - 60) + 'px';
+        hint.classList.add('show');
+        return;
+      }
+      go(n);
+    });
+  });
+  document.addEventListener('click', e => {
+    if (touch && active && !e.target.closest('.item')){ hide(active); hint.classList.remove('show'); }
+  });
+
+  // gentle parallax on the open image
+  stage.addEventListener('mousemove', e => {
+    if (!active || touch) return;
+    const dx = (e.clientX/W - .5), dy = (e.clientY/H - .5);
+    active.par.style.transform = `translate(${dx*-12}px,${dy*-8}px)`;
+  });
+
+  // image grows to fill the screen, then the case study opens on the same image
+  // Where each case study's first image sits on its page, so the hover image can fly straight into it.
+  const LANDING = {
+    'dtc':           {src:'assets/d2c/01.webp',           ratio:1800/1012},
+    'personal-care': {src:'assets/personal-care/01.webp', ratio:1920/976},
+    'art-direction': {src:'assets/art-direction/01.webp', ratio:1800/1200},
+    'spf':           {src:'assets/img/spf.webp',          ratio:1145/1373},
+    'food':          {src:'assets/img/food.webp',          ratio:1122/1402},
+    'beer':          {src:'assets/img/beer.webp',          ratio:1500/1087},
+    'coffee':        {src:'assets/coffee/01.webp',        ratio:1553/1017},
+  };
+  function landingRect(slug){
+    const L = LANDING[slug]; if (!L || W <= 860) return null;
+    const g = W*0.0249, gap = Math.min(64, Math.max(24, W*0.035));
+    const sw = (W - 2*g - gap) * 1.48/2;                     // stream column width (.52fr / 1.48fr)
+    const top = Math.max(72, H*101/FH) + 1 + 96;              // header + rule + 6rem
+    return {left: W - g - sw, top, width: sw, height: sw / L.ratio, src: L.src};
+  }
+  function markArrival(){ try { sessionStorage.setItem('fromHome','1'); } catch(e){} }
+
+  function go(n){
+    if (n.it.clear) return liftGhost(n);
+    const url = n.a.getAttribute('href');
+    if (matchMedia('(prefers-reduced-motion:reduce)').matches){ location.href = url; return; }
+    const rr = n.r.getBoundingClientRect();
+    const target = landingRect(n.it.slug) ||
+      (W > 860 ? {left:0, top:0, width:W, height:H, src:null} : null);
+    const wipe = document.getElementById('wipe');
+    // keep the header and first keyline in view; they sit in the same place on the case page
+    wipe.style.top = (Math.round(H*101/FH) + 1) + 'px';
+    if (!target){                                             // phones: a quiet fade
+      wipe.classList.add('go'); markArrival();
+      setTimeout(() => location.href = url, 420); return;
+    }
+    const f = document.createElement('div');
+    f.className = 'fly';
+    Object.assign(f.style, {left:rr.left+'px', top:rr.top+'px', width:rr.width+'px', height:rr.height+'px'});
+    const from = n.img.currentSrc || n.img.src;
+    f.innerHTML = `<img class="a" src="${from}" alt="">` + (target.src ? `<img class="b" src="${target.src}" alt="">` : '');
+    document.body.appendChild(f);
+    n.r.style.visibility = 'hidden';
+    const dur = 900, ease = 'cubic-bezier(.65,0,.35,1)';
+    const anim = f.animate([
+      {left:rr.left+'px', top:rr.top+'px', width:rr.width+'px', height:rr.height+'px'},
+      {left:target.left+'px', top:target.top+'px', width:target.width+'px', height:target.height+'px'}
+    ], {duration:dur, easing:ease, fill:'forwards'});
+    f.querySelector('.a').animate([{transform:'scale(1.05)'},{transform:'scale(1)'}], {duration:dur, easing:ease, fill:'forwards'});
+    const b = f.querySelector('.b');
+    if (b) b.animate([{opacity:0},{opacity:0, offset:.35},{opacity:1}], {duration:dur, easing:'ease-in-out', fill:'forwards'});
+    wipe.classList.add('go');
+    markArrival();
+    // go as soon as the flight lands and the next page's first image is decoded
+    const ready = b && b.decode ? b.decode().catch(()=>{}) : Promise.resolve();
+    Promise.all([anim.finished, ready]).then(() => location.href = url);
+  }
+
+  // DTC: the ghost lifts up and away as the page wipes to white
+  function liftGhost(n){
+    const url = n.a.getAttribute('href');
+    document.getElementById('wipe').classList.add('go'); markArrival();
+    if (matchMedia('(prefers-reduced-motion:reduce)').matches){ location.href = url; return; }
+    n.r.style.zIndex = 60;
+    n.r.animate([{translate:'0 0', opacity:1},{translate:'0 -60px', opacity:0}], {duration:650, easing:'cubic-bezier(.5,0,.75,0)', fill:'forwards'})
+      .onfinish = () => location.href = url;
+  }
+
+  document.querySelector('.role').addEventListener('click', e => {
+    e.preventDefault();
+    const url = e.currentTarget.getAttribute('href');
+    document.getElementById('wipe').classList.add('go');
+    setTimeout(() => location.href = url, 420);
+  });
+
+  // coming back via the back button: clear the transition layers
+  addEventListener('pageshow', e => {
+    if (e.persisted){
+      document.querySelectorAll('.fly, body > div[style*="z-index:50"]').forEach(x => x.remove());
+      nodes.forEach(n => { n.r.style.visibility = ''; n.r.style.zIndex = ''; n.r.getAnimations().forEach(a => a.cancel()); });
+      const w = document.getElementById('wipe'); w.classList.remove('go'); w.style.top = '';
+      if (active) hide(active);
+    }
+  });
+})();
+</script>
+<script data-goatcounter="https://siobhanfrost.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

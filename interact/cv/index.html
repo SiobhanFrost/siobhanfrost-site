@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CV | Siobhan Frost</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..700&family=Newsreader:opsz,wght@6..72,200..500&display=swap" rel="stylesheet">
+<link rel="preload" as="font" type="font/woff2" href="../assets/fonts/onsite-standard-regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../assets/fonts/onsite-condensed-medium.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../assets/fonts/tiempos-headline-light.woff2" crossorigin>
+<style>
+@font-face{font-family:"Onsite Condensed";src:url("../assets/fonts/onsite-condensed-medium.woff2") format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:"Onsite Standard";src:url("../assets/fonts/onsite-standard-regular.woff2") format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:"Tiempos Headline";src:url("../assets/fonts/tiempos-headline-light.woff2") format("woff2");font-weight:100 900;font-display:swap}
+:root{
+  --ink:#0d0d0d; --line:#9a9a9a; --soft:#6b6b6b; --accent:#0020C2;
+  --g:2.49vw;
+  --cond:"Onsite Condensed","Archivo",system-ui,sans-serif;
+  --body-font:"Onsite Standard","Archivo",system-ui,sans-serif;
+  --serif:"Tiempos Headline","Newsreader",Georgia,serif;
+  --ease:cubic-bezier(.22,.8,.18,1);
+  --body:clamp(14px,1.04vw,18px);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:#fff}
+body{font-family:var(--cond);font-stretch:72%;color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased;font-synthesis:none}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+
+/* header, same as the cover */
+.top{position:relative;height:calc(101/1117*100vh);min-height:72px;display:flex;justify-content:space-between;align-items:flex-start;padding:0 var(--g)}
+.back{margin-top:clamp(22px,3.1vh,40px);font-size:clamp(13px,1.16vw,20px);letter-spacing:.02em;transition:color .35s var(--ease)}
+.back:hover{color:rgba(13,13,13,.5)}
+.role{margin-top:clamp(18px,2.4vh,30px);display:flex;align-items:baseline;gap:.32em;font-size:clamp(20px,2.03vw,40px);line-height:1;transition:color .35s var(--ease)}
+.role .t{font-family:var(--serif);font-weight:300;letter-spacing:-.015em}
+.role .b{font-weight:600;font-size:.89em}
+.role:hover{color:rgba(13,13,13,.5)}
+
+.rule{height:1px;background:var(--line);margin:0 var(--g);transform:scaleX(0);transform-origin:left;animation:draw 1.1s var(--ease) forwards}
+@keyframes draw{to{transform:scaleX(1)}}
+
+/* layout */
+.cv{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,5.6fr) minmax(0,2.6fr);column-gap:3.2vw;padding:0 var(--g)}
+.col{min-width:0}
+.intro{padding-top:3.2vh;padding-right:clamp(48px,6vw,145px)}   /* wider gutter between the intro and Experience */
+.portrait{aspect-ratio:549/573;overflow:hidden;background:#eee;width:100%;max-width:400px}
+.portrait img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.06);opacity:0;animation:photo 1.6s var(--ease) .2s forwards}
+@keyframes photo{to{transform:none;opacity:1}}
+.bio{font-family:var(--serif);font-weight:300;font-size:clamp(22px,2.1vw,38px);line-height:1.2;letter-spacing:-.012em;margin-top:36px;max-width:15.5em}   /* 40px to the top of the letters */
+
+h2{font-family:var(--serif);font-weight:300;font-size:clamp(34px,3.05vw,56px);line-height:1;letter-spacing:-.015em;
+   height:calc(13vh + 1em);display:flex;align-items:flex-end;padding-bottom:0}
+.exp-cols{display:grid;grid-template-columns:1fr 1fr;column-gap:2.6vw}
+
+.entry{padding-top:3.2vh;font-family:var(--body-font);font-stretch:100%;font-size:var(--body);line-height:1.38}
+.exp-cols>div>.entry:first-child,.caps h2+.entry{padding-top:clamp(22px,2.6vh,34px)}   /* heading to first entry, same in every column */
+.entry .h{color:var(--accent)}
+.entry .h span{display:block}
+.entry p{max-width:26em}
+.entry .k{text-transform:uppercase;letter-spacing:.03em;margin-top:.1em}
+.entry li{position:relative;padding-left:1.15em}
+.entry li::before{content:"";position:absolute;left:.25em;top:.62em;width:.32em;height:.32em;border-radius:50%;background:currentColor}
+.entry li.cont{padding-left:1.15em}
+.entry li.cont::before{display:none}
+
+/* reveal on scroll */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+.foot{display:flex;justify-content:space-between;align-items:center;margin-top:12vh;padding:0 var(--g) 4vh;font-size:clamp(13px,1.16vw,20px);letter-spacing:.02em}
+.foot .rule{flex:1;margin:0 2vw}
+.foot a{transition:color .35s var(--ease)}
+.foot a:hover{color:rgba(13,13,13,.5)}
+
+.wipe{position:fixed;inset:0;background:#fff;z-index:9;pointer-events:none;opacity:0;transition:opacity .45s var(--ease)}
+.wipe.go{opacity:1}
+
+@media (max-width:1100px){
+  .cv{grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);row-gap:6vh}
+  .caps{grid-column:2}
+  .intro{grid-row:span 2}
+}
+@media (max-width:760px){
+  :root{--g:16px;--body:15px}
+  .top{height:72px}
+  .role{font-size:20px}
+  .cv{grid-template-columns:1fr;row-gap:7vh}
+  .intro{padding-right:0}
+  .caps{grid-column:auto}.intro{grid-row:auto}
+  .bio{font-size:24px;margin-top:40px}
+  .portrait{max-width:300px}
+  h2{height:auto;padding-top:10px;padding-bottom:16px;font-size:36px}
+  .exp-cols{grid-template-columns:1fr}
+  .entry,.entry:first-child{padding-top:24px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.portrait img{opacity:1;transform:none}.rule{transform:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="back" href="../" data-nav>&larr; HOME</a>
+  <a class="role" href="../" data-nav aria-label="Creative Director (Brand): back to home"><span class="t">Creative Director</span><span class="b">(BRAND)</span></a>
+</header>
+<div class="rule"></div>
+
+<main class="cv">
+  <section class="col intro">
+    <div class="portrait"><img src="../assets/img/portrait.webp" alt="Siobhan Frost"></div>
+    <p class="bio rv">With over 18 years of industry experience, across Australia, UK, Europe and USA, I’ve had the pleasure of working with some of the world’s largest brands, most ambitious founders and talented creatives in a variety of business stages and categories. Developing or amplifying their essence across all facets of their brand.</p>
+  </section>
+
+  <section class="col exp" aria-labelledby="h-exp">
+    <h2 id="h-exp" class="rv">Experience</h2>
+    <div class="exp-cols">
+      <div>
+        <article class="entry rv">
+          <div class="h"><span>Creative Director, Marnine Lane</span><span>USA, 2026 (3mths) Full-Time.</span></div>
+          <p>Leading 6 accounts from CPG branding to marketing roll-outs.</p>
+        </article>
+        <article class="entry rv">
+          <div class="h"><span>Creative Director, Cleo+Coco</span><span>USA, 2024-26 Full to part-time.</span><span>Now moved into Advising.</span></div>
+          <p>Leading the rebrand and launch into Whole Foods Market nationwide. #1 top selling privately owned deodorant brand in WFM.</p>
+        </article>
+        <article class="entry rv">
+          <div class="h"><span>Co-founder &amp; Creative Director, I am Endless</span><span>USA 2024/25, Side-Project</span></div>
+          <p>Sustainable Suncare.<br>Launching 2028</p>
+        </article>
+        <article class="entry rv">
+          <div class="h"><span>Art Direction, Landor</span><span>USA 2024, Freelance</span></div>
+          <p>Leading the new brand photography art direction for J&amp;J IM.</p>
+        </article>
+        <article class="entry rv">
+          <div class="h"><span>Founder &amp; Creative Director, This Works</span><span>UK &amp; USA 2017/24 (7 years), Full-Time</span></div>
+          <p class="k">Clients</p>
+          <ul>
+            <li>Seven Starling (USA)</li>
+            <li>Moxie Care &amp; Birth (USA)</li>
+            <li>BlackRock (UK &amp; Ireland)</li>
+            <li>ECR Coffee (UK)</li>
+            <li>Kooky (UK)</li>
+            <li>Mechanic Brewery (UK)</li>
+            <li>Oly Sheet (UK)</li>
+            <li>GreenFort Capital (AUS)</li>
+          </ul>
+        </article>
+      </div>
+      <div>
+        <article class="entry rv">
+          <div class="h"><span>UX, Branding, Packaging &amp; Marketing,</span><span>UK 2011 – 2016 (5 years), Freelance &amp; Permanent</span></div>
+          <p class="k">Selected agencies</p>
+          <ul>
+            <li>Landor; Etihad Airways</li>
+            <li>WM360 (SaaS B2B); CBRE &amp; Virgin Media</li>
+            <li>Clear M&amp;C Saatchi (Freelance to 1 year full-time); ASDA, Magnum, Peroni, Purina</li>
+            <li>Cheil Worldwide; Samsung</li>
+            <li>Leagas Delaney; Glenfiddich</li>
+            <li>Redwood BBDO (3 years full-time freelance); Barclays, Land Rover.</li>
+          </ul>
+        </article>
+        <article class="entry rv">
+          <div class="h"><span>Publishing Design, Morrison Media</span><span>AUS 2007/12 (5 years), Permanent</span></div>
+          <p class="k">Titles</p>
+          <ul>
+            <li>Australian Surfing Life</li>
+            <li>Aust. &amp; NZ Snowboarder</li>
+            <li>Longboarder</li>
+            <li>Slam Skate</li>
+            <li>Trail Bike</li>
+            <li>Australian Traveller</li>
+          </ul>
+        </article>
+        <article class="entry rv">
+          <div class="h"><span>Awards</span></div>
+          <ul>
+            <li>2024 Webby Award, Website Nominee</li>
+            <li>2024 CSS Design Awards, Website of the Day</li>
+            <li>2022 Drum Design, Finalist: Re-Brand</li>
+            <li>2022 Drum Design, Finalist: Art-Direction</li>
+            <li>2020 Design Week, Highly Commended: Wayfinding</li>
+            <li>2019 Drum Design, Award: Art Direction</li>
+            <li>2019 Drum Design, Finalist: Branding</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="col caps" aria-labelledby="h-caps">
+    <h2 id="h-caps" class="rv">Capabilities</h2>
+    <article class="entry rv">
+      <div class="h"><span>Founder Partnership</span></div>
+      <p>Most of my recent work has been with founder-led brands, often the founder’s first real brand build. I work closely with them from the first workshop and push them beyond what they first thought was possible, explaining the thinking behind each decision so they can commit with confidence. Just as at home in the room with corporate leadership.</p>
+    </article>
+    <article class="entry rv">
+      <div class="h"><span>Creative Territories &amp; Pitching</span></div>
+      <p>Developing distinct creative territories, usually three, built on brand strategy grounded in research and insight. At least one goes braver than the client expects. Years of pitching new business and presenting creative work to senior stakeholders.</p>
+    </article>
+    <article class="entry rv">
+      <div class="h"><span>Team Leadership</span></div>
+      <p>Leading my own projects while guiding designers and design directors. Clear direction, honest feedback and room to push the work past the brief. Budgets, timelines and deliverables managed so the creative ambition holds up commercially.</p>
+    </article>
+    <article class="entry rv">
+      <div class="h"><span>Strategy</span></div>
+      <p>Audits, competitor research, customer research and behavior. Insight turned into a position the team can design from.</p>
+    </article>
+    <article class="entry rv">
+      <div class="h"><span>Identity &amp; CPG Packaging</span></div>
+      <p>Ideation grounded in brand strategy, with hands-on design across every visual asset. Packaging built for the shelf, including Cleo+Coco’s national launch into Whole Foods Market.</p>
+    </article>
+    <article class="entry rv">
+      <div class="h"><span>Roll-Outs</span></div>
+      <p>Hands-on digital and print. Packaging, demo stands, ecom wireframing, UX and dev management, content planning, art direction, signage and wayfinding, through production to implementation.</p>
+    </article>
+  </section>
+</main>
+
+<footer class="foot">
+  <a href="../" data-nav>&larr; HOME</a>
+  <div class="rule" style="animation-delay:.4s"></div>
+  <a href="../spf/" data-nav>SELECTED WORK &rarr;</a>
+</footer>
+
+<div class="wipe" id="wipe"></div>
+<script>
+(() => {
+  const local = !/siobhanfrost\.com$/.test(location.hostname);
+  document.querySelectorAll('a[href]').forEach(a => {
+    const h = a.getAttribute('href');
+    if (local && h.endsWith('/') && !/^https?:/.test(h)) a.setAttribute('href', h + 'index.html');
+    if (a.hasAttribute('data-nav')) a.addEventListener('click', e => {
+      e.preventDefault(); document.getElementById('wipe').classList.add('go');
+      setTimeout(() => location.href = a.getAttribute('href'), 400);
+    });
+  });
+  addEventListener('pageshow', e => { if (e.persisted) document.getElementById('wipe').classList.remove('go'); });
+
+  // Sit "Creative Director (BRAND)" dead centre between the top of the browser and the first keyline,
+  // measured on the letters themselves (cap top to baseline), not the text box.
+  function centreRole(role, lineY, setTop){
+    const t = role.querySelector('.t'); if (!t) return;
+    const cs = getComputedStyle(t), fs = parseFloat(cs.fontSize);
+    const cx = document.createElement('canvas').getContext('2d');
+    cx.font = `${cs.fontWeight} ${fs}px ${cs.fontFamily}`;
+    const m = cx.measureText('Creative Director');
+    const capTop = m.actualBoundingBoxAscent;                       // ink above the baseline
+    const fA = m.fontBoundingBoxAscent, fD = m.fontBoundingBoxDescent;
+    const lh = parseFloat(getComputedStyle(role).lineHeight) || fs;
+    const baselineInBox = (lh - (fA + fD))/2 + fA;                    // baseline from top of the line box
+    const baselineTarget = lineY/2 + capTop/2;
+    setTop(Math.round((baselineTarget - baselineInBox)*2)/2);
+  }
+
+  const top = document.querySelector('.top'), role = top.querySelector('.role'), back = top.querySelector('.back');
+  const place = () => {
+    const H = top.offsetHeight;
+    centreRole(role, H, v => role.style.marginTop = v+'px');
+    // the Index link shares the same baseline
+    back.style.marginTop = '0px';
+    const rb = role.querySelector('.t').getBoundingClientRect(), bb = back.getBoundingClientRect();
+    const roleBase = role.offsetTop + role.offsetHeight, backH = back.offsetHeight;
+    back.style.marginTop = Math.max(0, (role.offsetTop + role.offsetHeight) - backH - 2) + 'px';
+  };
+  place(); addEventListener('resize', place); document.fonts && document.fonts.ready.then(place);
+
+  // entries rise in as they come into view, staggered per column
+  const els = [...document.querySelectorAll('.rv')];
+  const show = el => el.classList.add('in');
+  if (!('IntersectionObserver' in window)) return els.forEach(show);
+  const io = new IntersectionObserver(list => {
+    list.filter(x => x.isIntersecting).forEach((x, i) => {
+      setTimeout(() => show(x.target), i * 70);
+      io.unobserve(x.target);
+    });
+  }, {rootMargin:'0px 0px -6% 0px'});
+  els.forEach(el => io.observe(el));
+})();
+</script>
+<script data-goatcounter="https://siobhanfrost.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
