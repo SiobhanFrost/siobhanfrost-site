@@ -49,7 +49,8 @@ ul{list-style:none}
 .portrait{aspect-ratio:549/573;overflow:hidden;background:#eee;width:100%;max-width:400px}
 .portrait img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.06);opacity:0;animation:photo 1.6s var(--ease) .2s forwards}
 @keyframes photo{to{transform:none;opacity:1}}
-.bio{font-family:var(--serif);font-weight:300;font-size:clamp(22px,2.1vw,38px);line-height:1.2;letter-spacing:-.012em;margin-top:36px;max-width:15.5em}   /* 40px to the top of the letters */
+.bio{font-family:var(--serif);font-weight:300;font-size:clamp(22px,2.1vw,38px);line-height:1.2;letter-spacing:-.012em;margin-top:36px;max-width:15.5em}
+.bio p+p{margin-top:.75em}   /* 40px to the top of the letters */
 
 h2{font-family:var(--serif);font-weight:300;font-size:clamp(34px,3.05vw,56px);line-height:1;letter-spacing:-.015em;
    height:calc(13vh + 1em);display:flex;align-items:flex-end;padding-bottom:0}
@@ -57,7 +58,7 @@ h2{font-family:var(--serif);font-weight:300;font-size:clamp(34px,3.05vw,56px);li
 
 .entry{padding-top:3.2vh;font-family:var(--body-font);font-stretch:100%;font-size:var(--body);line-height:1.38}
 .exp-cols>div>.entry:first-child,.caps h2+.entry{padding-top:clamp(22px,2.6vh,34px)}   /* heading to first entry, same in every column */
-.entry .h{color:var(--ink)}
+.entry .h{color:var(--ink);-webkit-text-stroke:.03em currentColor;paint-order:stroke fill}   /* heavier weight; swap for Onsite Medium/Bold once licensed */
 .entry .h span{display:block}
 .entry p{max-width:26em}
 .entry .k{text-transform:uppercase;letter-spacing:.03em;margin-top:.1em}
@@ -109,7 +110,11 @@ h2{font-family:var(--serif);font-weight:300;font-size:clamp(34px,3.05vw,56px);li
 <main class="cv">
   <section class="col intro">
     <div class="portrait"><img src="../assets/img/portrait.webp" alt="Siobhan Frost"></div>
-    <p class="bio rv">With over 18 years of industry experience, across Australia, UK, Europe and USA, I’ve had the pleasure of working with some of the world’s largest brands, most ambitious founders and talented creatives in a variety of business stages and categories. Developing or amplifying their essence across all facets of their brand.</p>
+    <div class="bio rv">
+      <p>Hi Dan &amp; the Interact team!</p>
+      <p>I love what you’ve built at your brand studio, and would love to be considered as your next hire.</p>
+      <p>With over 18 years of industry experience, across Australia, UK, Europe and USA, I’ve had the pleasure of working with some of the world’s largest brands, most ambitious founders and talented creatives in a variety of business stages and categories. Developing or amplifying their essence across all facets of their brand.</p>
+    </div>
   </section>
 
   <section class="col exp" aria-labelledby="h-exp">
@@ -117,23 +122,23 @@ h2{font-family:var(--serif);font-weight:300;font-size:clamp(34px,3.05vw,56px);li
     <div class="exp-cols">
       <div>
         <article class="entry rv">
-          <div class="h"><span>Creative Director, Marnine Lane</span><span>USA, 2026 (3mths) Full-Time.</span></div>
+          <div class="h"><span>Creative Director, Marine Lane</span><span>USA, 2026 (3 months), Full-time</span></div>
           <p>Leading 6 accounts from CPG branding to marketing roll-outs.</p>
         </article>
         <article class="entry rv">
-          <div class="h"><span>Creative Director, Cleo+Coco</span><span>USA, 2024-26 Full to part-time.</span><span>Now moved into Advising.</span></div>
-          <p>Leading the rebrand and launch into Whole Foods Market nationwide. #1 top selling privately owned deodorant brand in WFM.</p>
+          <div class="h"><span>Creative Director, Cleo+Coco</span><span>USA, 2024–26, Full-time to part-time</span><span>Now advising</span></div>
+          <p>Leading the rebrand and launch into Whole Foods Market nationwide. #1 top-selling privately owned deodorant brand in WFM.</p>
         </article>
         <article class="entry rv">
-          <div class="h"><span>Co-founder &amp; Creative Director, I am Endless</span><span>USA 2024/25, Side-Project</span></div>
-          <p>Sustainable Suncare.<br>Launching 2028</p>
+          <div class="h"><span>Co-founder &amp; Creative Director, I Am Endless</span><span>USA, 2024–25, Side project</span></div>
+          <p>Sustainable suncare.<br>Launching 2028.</p>
         </article>
         <article class="entry rv">
-          <div class="h"><span>Art Direction, Landor</span><span>USA 2024, Freelance</span></div>
+          <div class="h"><span>Art Direction, Landor</span><span>USA, 2024, Freelance</span></div>
           <p>Leading the new brand photography art direction for J&amp;J IM.</p>
         </article>
         <article class="entry rv">
-          <div class="h"><span>Founder &amp; Creative Director, This Works</span><span>UK &amp; USA 2017/24 (7 years), Full-Time</span></div>
+          <div class="h"><span>Founder &amp; Creative Director, This Works</span><span>UK &amp; USA, 2017–24 (7 years), Full-time</span></div>
           <p class="k">Clients</p>
           <ul>
             <li>Seven Starling (USA)</li>
@@ -149,19 +154,19 @@ h2{font-family:var(--serif);font-weight:300;font-size:clamp(34px,3.05vw,56px);li
       </div>
       <div>
         <article class="entry rv">
-          <div class="h"><span>UX, Branding, Packaging &amp; Marketing,</span><span>UK 2011 – 2016 (5 years), Freelance &amp; Permanent</span></div>
+          <div class="h"><span>UX, Branding, Packaging &amp; Marketing</span><span>UK, 2011–16 (5 years), Freelance &amp; permanent</span></div>
           <p class="k">Selected agencies</p>
           <ul>
-            <li>Landor; Etihad Airways</li>
-            <li>WM360 (SaaS B2B); CBRE &amp; Virgin Media</li>
-            <li>Clear M&amp;C Saatchi (Freelance to 1 year full-time); ASDA, Magnum, Peroni, Purina</li>
-            <li>Cheil Worldwide; Samsung</li>
-            <li>Leagas Delaney; Glenfiddich</li>
-            <li>Redwood BBDO (3 years full-time freelance); Barclays, Land Rover.</li>
+            <li>Landor: Etihad Airways</li>
+            <li>WM360 (SaaS B2B): CBRE &amp; Virgin Media</li>
+            <li>Clear M&amp;C Saatchi (freelance, then 1 year full-time): ASDA, Magnum, Peroni, Purina</li>
+            <li>Cheil Worldwide: Samsung</li>
+            <li>Leagas Delaney: Glenfiddich</li>
+            <li>Redwood BBDO (3 years full-time freelance): Barclays, Land Rover</li>
           </ul>
         </article>
         <article class="entry rv">
-          <div class="h"><span>Publishing Design, Morrison Media</span><span>AUS 2007/12 (5 years), Permanent</span></div>
+          <div class="h"><span>Publishing Design, Morrison Media</span><span>Australia, 2007–12 (5 years), Permanent</span></div>
           <p class="k">Titles</p>
           <ul>
             <li>Australian Surfing Life</li>
@@ -177,8 +182,8 @@ h2{font-family:var(--serif);font-weight:300;font-size:clamp(34px,3.05vw,56px);li
           <ul>
             <li>2024 Webby Award, Website Nominee</li>
             <li>2024 CSS Design Awards, Website of the Day</li>
-            <li>2022 Drum Design, Finalist: Re-Brand</li>
-            <li>2022 Drum Design, Finalist: Art-Direction</li>
+            <li>2022 Drum Design, Finalist: Rebrand</li>
+            <li>2022 Drum Design, Finalist: Art Direction</li>
             <li>2020 Design Week, Highly Commended: Wayfinding</li>
             <li>2019 Drum Design, Award: Art Direction</li>
             <li>2019 Drum Design, Finalist: Branding</li>
@@ -212,7 +217,7 @@ h2{font-family:var(--serif);font-weight:300;font-size:clamp(34px,3.05vw,56px);li
     </article>
     <article class="entry rv">
       <div class="h"><span>Roll-Outs</span></div>
-      <p>Hands-on digital and print. Packaging, demo stands, ecom wireframing, UX and dev management, content planning, art direction, signage and wayfinding, through production to implementation.</p>
+      <p>Hands-on digital and print. Packaging, demo stands, e-commerce wireframing, UX and dev management, content planning, art direction, signage and wayfinding, through production to implementation.</p>
     </article>
   </section>
 </main>
